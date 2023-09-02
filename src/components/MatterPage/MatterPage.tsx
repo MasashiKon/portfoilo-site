@@ -3,15 +3,16 @@
 import { useRef, useEffect } from "react";
 import { Engine, Render, Runner, Bodies, Composite } from "matter-js";
 
-const HomePage = () => {
+const MatterPage = () => {
   const testRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if(!testRef.current) return;
+    if (!testRef.current) return;
+    const div = testRef.current;
     const engine = Engine.create();
 
     const render = Render.create({
-      element: testRef.current,
+      element: div,
       engine: engine,
     });
 
@@ -25,6 +26,10 @@ const HomePage = () => {
     const runner = Runner.create();
 
     Runner.run(runner, engine);
+
+    return () => {
+      div.innerHTML = "";
+    };
   }, []);
 
   return (
@@ -37,4 +42,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default MatterPage;
