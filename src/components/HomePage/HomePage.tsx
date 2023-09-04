@@ -40,7 +40,7 @@ const HomePage = () => {
           width={200}
           height={200}
           alt="tete"
-          className={`absolute safariImg select-none left-[10%] -top-[200px] origin-center hover:scale-[120%] active:scale-50 transition-{scale} duration-200 transition-{x} duration-200 ${
+          className={`absolute safariImg select-none left-[10%] -top-[200px] hover:scale-[120%] active:scale-50 transition-{scale} duration-200 transition-{x} duration-200 ${
             isStarted && "translate-y-[250px]"
           }`}
         />
@@ -49,7 +49,7 @@ const HomePage = () => {
           width={200}
           height={200}
           alt="tete"
-          className={`absolute safariImg select-none -left-[200px] bottom-[5%] origin-center hover:scale-[120%] active:scale-50 transition-{scale} duration-200 transition-{x} duration-200 ${
+          className={`absolute safariImg select-none -left-[200px] bottom-[5%] ${
             isStarted && "translate-x-[100px]"
           }`}
         />
@@ -58,7 +58,7 @@ const HomePage = () => {
           width={200}
           height={200}
           alt="tete"
-          className={`absolute safariImg select-none -left-[200px] bottom-[10%] origin-center hover:scale-[120%] active:scale-50 transition-{scale} duration-200 transition-{x} duration-200 ${
+          className={`absolute safariImg select-none -left-[200px] bottom-[10%] hover:scale-[120%] active:scale-50 transition-{scale} duration-200 transition-{x} duration-200 ${
             isStarted && "translate-x-[150px]"
           }`}
         />
@@ -67,7 +67,7 @@ const HomePage = () => {
           width={200}
           height={200}
           alt="tete"
-          className={`absolute safariImg select-none left-full bottom-[5%] origin-center hover:scale-[120%] active:scale-50 transition-{scale} duration-200 transition-{x} duration-200 ${
+          className={`absolute safariImg select-none left-full bottom-[5%] ${
             isStarted && "-translate-x-[100px]"
           }`}
         />
@@ -76,7 +76,7 @@ const HomePage = () => {
           width={200}
           height={200}
           alt="tete"
-          className={`absolute safariImg select-none left-full bottom-[10%] origin-center hover:scale-[120%] active:scale-50 transition-{scale} duration-200 transition-{x} duration-200 ${
+          className={`absolute safariImg select-none left-full bottom-[10%] hover:scale-[120%] active:scale-50 transition-{scale} duration-200 transition-{x} duration-200 ${
             isStarted && "-translate-x-[150px]"
           }`}
         />
@@ -85,7 +85,7 @@ const HomePage = () => {
           width={100}
           height={100}
           alt="tete"
-          className={`absolute safariImg select-none -left-[100px] bottom-[10%] origin-center hover:scale-[120%] active:scale-50 transition-{scale} duration-200 transition-{x} duration-200 ${
+          className={`absolute safariImg select-none -left-[100px] bottom-[10%] hover:scale-[120%] active:scale-50 transition-{scale} duration-200 transition-{x} duration-200 ${
             isStarted && "translate-x-[200px]"
           }`}
         />

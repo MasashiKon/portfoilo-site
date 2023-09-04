@@ -15,5 +15,5 @@ html {
 .safariImg {
   user-select: none;
   -webkit-user-select: none;
-  pointer-events: none;
+  -webkit-touch-callout: none;
 }
