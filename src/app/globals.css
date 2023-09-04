@@ -2,8 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-body, html {
+html {
+    position: sticky;
+}
+
+body {
   max-width: 100%;
   overflow-x: clip;
-  position: relative;
 }
