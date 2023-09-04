@@ -2,8 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-body, html {
+body,
+html {
   max-width: 100%;
   overflow-x: clip;
-  -webkit-overflow-scrolling: touch;
+}
+
+.iOS_body {
+  overflow-w: hidden;
 }
