@@ -23,7 +23,7 @@ const HomePage = () => {
 
   return (
     <main>
-      <section className="flex justify-center items-center h-screen w-screen">
+      <section className="flex justify-center items-center h-screen w-screen relative">
         {isStarted !== null && !isStarted && (
           <div
             className={`cursor-pointer hover:text-xl active:text-sm select-none transition-{font-size} transition-{line-height} duration-200`}
@@ -90,6 +90,7 @@ const HomePage = () => {
           }`}
         />
       </section>
+      <section className="h-screen"></section>
     </main>
   );
 };
