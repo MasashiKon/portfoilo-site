@@ -11,3 +11,8 @@ html {
 .iOS_body {
   overflow-x: hidden;
 }
+
+.safariImg {
+  user-select: none;
+  -webkit-user-select: none;
+}
