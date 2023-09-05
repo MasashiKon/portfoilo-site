@@ -58,7 +58,7 @@ const HomePage = () => {
           width={200}
           height={200}
           alt="tete"
-          className={`absolute safariImg select-none -left-[200px] bottom-[10%] hover:scale-[120%] active:scale-50 transition-{scale} duration-200 transition-{x} duration-200 ${
+          className={`absolute safariImg select-none -left-[200px] bottom-[10%] ${
             isStarted && "translate-x-[150px]"
           }`}
         />
@@ -76,7 +76,7 @@ const HomePage = () => {
           width={200}
           height={200}
           alt="tete"
-          className={`absolute safariImg select-none left-full bottom-[10%] hover:scale-[120%] active:scale-50 transition-{scale} duration-200 transition-{x} duration-200 ${
+          className={`absolute safariImg select-none left-full bottom-[10%] ${
             isStarted && "-translate-x-[150px]"
           }`}
         />
@@ -85,7 +85,7 @@ const HomePage = () => {
           width={100}
           height={100}
           alt="tete"
-          className={`absolute safariImg select-none -left-[100px] bottom-[10%] hover:scale-[120%] active:scale-50 transition-{scale} duration-200 transition-{x} duration-200 ${
+          className={`absolute safariImg select-none -left-[100px] bottom-[10%] ${
             isStarted && "translate-x-[200px]"
           }`}
         />
