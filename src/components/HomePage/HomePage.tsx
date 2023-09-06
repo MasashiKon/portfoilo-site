@@ -11,6 +11,7 @@ import { setIsTutorialMet } from "@/redux/reducers/puzzleSlice";
 
 const HomePage = () => {
   const [bodyHeight, setBodyHeight] = useState(0);
+  const [bodyWidth, setBodyWidth] = useState(0);
   const [scrollY, setScrollY] = useState(0);
   const [innerWidth, setInnerWidth] = useState(0);
 
@@ -33,6 +34,7 @@ const HomePage = () => {
 
     document.body.onscroll = () => {
       setBodyHeight(document.body.scrollHeight);
+      setBodyWidth(document.body.scrollWidth);
       setScrollY(window.scrollY);
     };
     setInnerWidth(window.innerHeight);
@@ -43,12 +45,12 @@ const HomePage = () => {
   }, [isStarted, dispatch]);
 
   useEffect(() => {
-    if (scrollY >= bodyHeight - innerWidth - 80) {
+    if (scrollY >= bodyHeight - innerWidth - (bodyWidth < 768 ? - 80 : 0)) {
       dispatch(setIsTutorialMet(true));
     } else if (isTutorialMet) {
       dispatch(setIsTutorialMet(false));
     }
-  }, [scrollY, bodyHeight, innerWidth, isTutorialMet, dispatch]);
+  }, [scrollY, bodyHeight, bodyWidth, innerWidth, isTutorialMet, dispatch]);
 
   useEffect(() => {}, [dispatch]);
 
