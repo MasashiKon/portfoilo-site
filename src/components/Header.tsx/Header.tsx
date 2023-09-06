@@ -52,7 +52,7 @@ function Header() {
         isTutorialMet &&
         !isTutorialDone &&
         checkButton.current &&
-        intervalCount >= 200
+        intervalCount >= 100
       ) {
         setButtonBorderAlpha((preButtonBorderAlpha) => {
           const value = preButtonBorderAlpha.value;
