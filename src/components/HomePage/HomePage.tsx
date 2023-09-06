@@ -43,7 +43,7 @@ const HomePage = () => {
   }, [isStarted, dispatch]);
 
   useEffect(() => {
-    if (scrollY >= bodyHeight - innerWidth - 10) {
+    if (scrollY >= bodyHeight - innerWidth - 100) {
       dispatch(setIsTutorialMet(true));
     } else if (isTutorialMet) {
       dispatch(setIsTutorialMet(false));
