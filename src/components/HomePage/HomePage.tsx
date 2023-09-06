@@ -45,7 +45,7 @@ const HomePage = () => {
   }, [isStarted, dispatch]);
 
   useEffect(() => {
-    if (scrollY >= bodyHeight - innerWidth - (bodyWidth < 768 ? - 80 : 0)) {
+    if (scrollY >= bodyHeight - innerWidth - (bodyWidth < 768 ? 80 : 0)) {
       dispatch(setIsTutorialMet(true));
     } else if (isTutorialMet) {
       dispatch(setIsTutorialMet(false));
