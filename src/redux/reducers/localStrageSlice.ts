@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { LocalStrage, LocalStrageValue } from "@/localStrage/localStrageValues";
+import { LocalStrage, LocalStrageValue } from "@/types/localStrageValues";
 
 const initialState: LocalStrage = {
   isStarted: null,
+  isTutorialDone: false,
 };
 
 export const localStrageSlice = createSlice({
@@ -12,6 +13,10 @@ export const localStrageSlice = createSlice({
     setIsStarted: (state, action) => {
       localStorage.setItem(LocalStrageValue.is_started, action.payload);
       state.isStarted = action.payload;
+    },
+    setIsTutorialDone: (state) => {
+      localStorage.setItem(LocalStrageValue.is_tutorial_done, "true");
+      state.isTutorialDone = true;
     },
     removeItem: (
       state,

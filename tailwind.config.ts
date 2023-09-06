@@ -16,9 +16,10 @@ const config: Config = {
       colors: {
         "english-violet": "#442B48",
         "dim-gray": "#726E60",
-        'olivine': "#98B06F",
+        "olivine": "#98B06F",
         "yellow-green": "#B6DC76",
-        'mindaro': "#DBFF76",
+        "mindaro": "#DBFF76",
+        "yellow-green-con": "#9C76DC",
       },
     },
   },

@@ -4,22 +4,53 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Image from "next/image";
 
-import { LocalStrageValue } from "@/localStrage/localStrageValues";
+import { LocalStrageValue } from "@/types/localStrageValues";
 import { RootState } from "@/redux/store";
 import { setIsStarted } from "@/redux/reducers/localStrageSlice";
+import { setIsTutorialMet } from "@/redux/reducers/puzzleSlice";
 
 const HomePage = () => {
+  const [bodyHeight, setBodyHeight] = useState(0);
+  const [scrollY, setScrollY] = useState(0);
+  const [innerWidth, setInnerWidth] = useState(0);
+
   const isStarted = useSelector(
     (state: RootState) => state.localStorage.isStarted
+  );
+  const isTutorialMet = useSelector(
+    (state: RootState) => state.puzzle.isTutorialMet
   );
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const isStartedLocal = Boolean(
-      localStorage.getItem(LocalStrageValue.is_started)
-    );
-    dispatch(setIsStarted(isStartedLocal));
-  }, [dispatch]);
+    if (isStarted === null) {
+      const isStartedLocal = Boolean(
+        localStorage.getItem(LocalStrageValue.is_started)
+      );
+
+      dispatch(setIsStarted(isStartedLocal));
+    }
+
+    document.body.onscroll = () => {
+      setBodyHeight(document.body.scrollHeight);
+      setScrollY(window.scrollY);
+    };
+    setInnerWidth(window.innerHeight);
+
+    return () => {
+      document.body.onscroll = null;
+    };
+  }, [isStarted, dispatch]);
+
+  useEffect(() => {
+    if (scrollY === bodyHeight - innerWidth) {
+      dispatch(setIsTutorialMet(true));
+    } else if (isTutorialMet) {
+      dispatch(setIsTutorialMet(false));
+    }
+  }, [scrollY, bodyHeight, innerWidth, isTutorialMet, dispatch]);
+
+  useEffect(() => {}, [dispatch]);
 
   return (
     <main>
@@ -85,12 +116,22 @@ const HomePage = () => {
           width={100}
           height={100}
           alt="tete"
-          className={`absolute safariImg select-none -left-[100px] bottom-[10%] ${
+          className={`fixed safariImg select-none -left-[100px] bottom-[10%] ${
             isStarted && "translate-x-[200px]"
           }`}
         />
       </section>
-      <section className="h-screen"></section>
+      {isStarted && (
+        <section className="relative h-screen w-screen">
+          <Image
+            src={"/deer1.svg"}
+            width={100}
+            height={100}
+            alt="tete"
+            className={`absolute safariImg select-none left-[100px] bottom-[10%]`}
+          />
+        </section>
+      )}
     </main>
   );
 };
