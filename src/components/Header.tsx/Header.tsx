@@ -2,11 +2,20 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import { HiOutlineSearchCircle } from "react-icons/hi";
+import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
-import { removeItem } from "@/redux/reducers/localStrageSlice";
+import {
+  removeItem,
+  setIsStarted,
+  setfoundTotalToRedux,
+  incrementFound,
+  removeAll,
+  setIsTutorialDone,
+} from "@/redux/reducers/localStrageSlice";
 import { LocalStrageValue } from "@/types/localStrageValues";
 import { RootState } from "@/redux/store";
-import { useEffect, useRef, useState } from "react";
+import { playSoundCorrect, playclickSound } from "@/utils/playSound";
 
 enum buttonBorderStatus {
   inc = "inc",
@@ -31,9 +40,11 @@ function Header() {
   const isTutorialMet = useSelector(
     (state: RootState) => state.puzzle.isTutorialMet
   );
-
   const isTutorialDone = useSelector(
     (state: RootState) => state.localStorage.isTutorialDone
+  );
+  const foundTotal = useSelector(
+    (state: RootState) => state.localStorage.foundTotal
   );
 
   const checkButton = useRef<HTMLButtonElement>(null);
@@ -41,10 +52,25 @@ function Header() {
   const handleCheckButton = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    if (isTutorialMet) {
-      console.log("ok");
+    if (isTutorialMet && !isTutorialDone) {
+      playSoundCorrect();
+      setTimeout(() => {
+        dispatch(setIsTutorialDone(true));
+        setTimeout(() => {
+          dispatch(incrementFound(null));
+        }, 500);
+      }, 200);
+    } else {
+      playclickSound();
     }
   };
+
+  useEffect(() => {
+    const foundTotalLocal = localStorage.getItem(LocalStrageValue.found_total);
+
+    if (!foundTotalLocal) return;
+    dispatch(setfoundTotalToRedux(Number(foundTotalLocal)));
+  }, [dispatch]);
 
   useEffect(() => {
     const breathButton = setInterval(() => {
@@ -101,27 +127,41 @@ function Header() {
   }, [isTutorialMet, isTutorialDone, intervalCount, buttonBorderAlpha.status]);
 
   return (
-    <div className="fixed h-20 w-screen z-10 flex justify-between items-center p-5 pt-10">
-      <div>
-        <p>Header</p>
+    <div className="relative z-10">
+      <div className="fixed h-20 w-screen flex justify-between items-center p-5 pt-10">
+        <div>
+          <p>Header</p>
+          <button onClick={() => dispatch(removeAll("all"))}>reset</button>
+        </div>
         <button
-          onClick={() => dispatch(removeItem(LocalStrageValue.is_started))}
+          className="flex justify-start items-center rounded-full bg-yellow-green w-20 h-20 md:bg-olivine md:hover:bg-yellow-green active:shadow-[inset_5px_5px_8px_8px_rgba(0,0,0,0.3)] transition-colors duration-300"
+          style={{
+            borderColor: `rgba(156, 118, 220, ${buttonBorderAlpha.value})`,
+            borderWidth: "5px",
+            borderStyle: "solid",
+          }}
+          onClick={handleCheckButton}
+          ref={checkButton}
         >
-          reset
+          <HiOutlineSearchCircle className="w-20 h-20 active:scale-95" />
         </button>
       </div>
-      <button
-        className="flex justify-start items-center rounded-full bg-yellow-green w-20 h-20 md:bg-olivine md:hover:bg-yellow-green active:shadow-[inset_5px_5px_8px_8px_rgba(0,0,0,0.3)] transition-colors duration-300"
-        style={{
-          borderColor: `rgba(156, 118, 220, ${buttonBorderAlpha.value})`,
-          borderWidth: "5px",
-          borderStyle: "solid",
-        }}
-        onClick={handleCheckButton}
-        ref={checkButton}
-      >
-        <HiOutlineSearchCircle className="w-20 h-20 active:scale-95" />
-      </button>
+      {isTutorialDone && (
+        <motion.div
+          className="fixed mt-28 right-5 h-10 w-10 rounded-md border-olivine border-4 bg-white flex justify-center items-center overflow-hidden"
+          initial={{ x: 100 }}
+          animate={{ x: 0 }}
+        >
+          <motion.div
+            key={foundTotal}
+            initial={{ y: foundTotal ? 50 : 0}}
+            animate={{ y: 0 }}
+            exit={{ y: foundTotal ? -50 : 0 }}
+          >
+            {foundTotal}
+          </motion.div>
+        </motion.div>
+      )}
     </div>
   );
 }

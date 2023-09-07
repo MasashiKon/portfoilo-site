@@ -3,7 +3,8 @@ import { LocalStrage, LocalStrageValue } from "@/types/localStrageValues";
 
 const initialState: LocalStrage = {
   isStarted: null,
-  isTutorialDone: false,
+  isTutorialDone: null,
+  foundTotal: 0,
 };
 
 export const localStrageSlice = createSlice({
@@ -14,21 +15,48 @@ export const localStrageSlice = createSlice({
       localStorage.setItem(LocalStrageValue.is_started, action.payload);
       state.isStarted = action.payload;
     },
-    setIsTutorialDone: (state) => {
-      localStorage.setItem(LocalStrageValue.is_tutorial_done, "true");
-      state.isTutorialDone = true;
+    setIsTutorialDone: (state, action) => {
+      localStorage.setItem(LocalStrageValue.is_tutorial_done, action.payload);
+      state.isTutorialDone = action.payload;
+    },
+    setfoundTotalToRedux: (state, action) => {
+      state.foundTotal = action.payload;
+    },
+    incrementFound: (state, _) => {
+      localStorage.setItem(
+        LocalStrageValue.found_total,
+        String(state.foundTotal + 1)
+      );
+      state.foundTotal++;
     },
     removeItem: (
       state,
       action: { payload: LocalStrageValue; type: string }
     ) => {
-      localStorage.removeItem(action.payload);
       if (action.payload === LocalStrageValue.is_started) {
-        state.isStarted = false;
+        localStorage.removeItem(action.payload);
+        state.isStarted = null;
       }
+      if (action.payload === LocalStrageValue.is_tutorial_done) {
+        localStorage.removeItem(action.payload);
+        state.isTutorialDone = null;
+      }
+    },
+    removeAll: (state, _) => {
+      localStorage.clear();
+      state.isStarted = null;
+      state.isTutorialDone = null;
+      state.foundTotal = 0;
     },
   },
 });
 
-export const { setIsStarted, removeItem } = localStrageSlice.actions;
+export const {
+  setIsStarted,
+  setIsTutorialDone,
+  setfoundTotalToRedux,
+  incrementFound,
+  removeItem,
+  removeAll,
+} = localStrageSlice.actions;
 export default localStrageSlice.reducer;

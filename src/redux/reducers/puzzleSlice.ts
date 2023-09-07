@@ -12,6 +12,9 @@ export const puzzleSlice = createSlice({
     setIsTutorialMet: (state, action) => {
       state.isTutorialMet = action.payload;
     },
+    removeAll: (state, _) => {
+      state.isTutorialMet = false;
+    }
   },
 });
 
