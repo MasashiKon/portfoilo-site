@@ -298,7 +298,8 @@ const HomePage = () => {
                           x: { duration: 0.3, delay: i * 0.1 },
                           transform: { duration: 0.3 },
                         }}
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.preventDefault();
                           setCurrentDeg((pre) => {
                             if (isPuzzle1Done) return pre;
                             const newArr = pre.map((num) => num);
