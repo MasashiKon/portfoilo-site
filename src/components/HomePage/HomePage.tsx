@@ -41,7 +41,7 @@ import {
 } from "@/redux/reducers/puzzleSlice";
 import { transform } from "typescript";
 
-const techsClass = "h-20 w-20 text-dim-gray";
+const techsClass = "h-20 w-20 text-dim-gray select-none";
 
 const techStack = [
   <SiReact
