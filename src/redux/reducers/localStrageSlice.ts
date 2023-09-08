@@ -4,6 +4,7 @@ import { LocalStrage, LocalStrageValue } from "@/types/localStrageValues";
 const initialState: LocalStrage = {
   isStarted: null,
   isTutorialDone: null,
+  isPuzzle1Done: null,
   foundTotal: 0,
 };
 
@@ -18,6 +19,10 @@ export const localStrageSlice = createSlice({
     setIsTutorialDone: (state, action) => {
       localStorage.setItem(LocalStrageValue.is_tutorial_done, action.payload);
       state.isTutorialDone = action.payload;
+    },
+    setIsPuzzle1Done: (state, action) => {
+      localStorage.setItem(LocalStrageValue.is_puzzle1_done, action.payload);
+      state.isPuzzle1Done = action.payload;
     },
     setfoundTotalToRedux: (state, action) => {
       state.foundTotal = action.payload;
@@ -41,11 +46,16 @@ export const localStrageSlice = createSlice({
         localStorage.removeItem(action.payload);
         state.isTutorialDone = null;
       }
+      if (action.payload === LocalStrageValue.is_puzzle1_done) {
+        localStorage.removeItem(action.payload);
+        state.isPuzzle1Done = null;
+      }
     },
     removeAll: (state, _) => {
       localStorage.clear();
       state.isStarted = null;
       state.isTutorialDone = null;
+      state.isPuzzle1Done = null;
       state.foundTotal = 0;
     },
   },
@@ -54,6 +64,7 @@ export const localStrageSlice = createSlice({
 export const {
   setIsStarted,
   setIsTutorialDone,
+  setIsPuzzle1Done,
   setfoundTotalToRedux,
   incrementFound,
   removeItem,

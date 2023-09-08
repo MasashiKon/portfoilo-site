@@ -33,38 +33,91 @@ import { RootState } from "@/redux/store";
 import {
   setIsStarted,
   setIsTutorialDone,
+  setIsPuzzle1Done,
 } from "@/redux/reducers/localStrageSlice";
-import { setIsTutorialMet } from "@/redux/reducers/puzzleSlice";
+import {
+  setIsTutorialMet,
+  setIsPuzzle1Met,
+} from "@/redux/reducers/puzzleSlice";
+import { transform } from "typescript";
+
+const techsClass = "h-20 w-20 text-dim-gray";
 
 const techStack = [
-  <SiReact key="SiReact" className="h-20 w-20"/>,
-  <SiNextdotjs key="SiNextdotjs" className="h-20 w-20"/>,
-  <SiJavascript key="SiJavascript" className="h-20 w-20"/>,
-  <SiCss3 key="SiCss3" className="h-20 w-20"/>,
-  <SiHtml5 key="SiHtml5" className="h-20 w-20"/>,
-  <SiCypress key="SiCypress" className="h-20 w-20"/>,
-  <SiDocker key="SiDocker" className="h-20 w-20"/>,
-  <SiPython key="SiPython" className="h-20 w-20"/>,
-  <SiCsharp key="SiCsharp" className="h-20 w-20"/>,
-  <SiTypescript key="SiTypescript" className="h-20 w-20"/>,
-  <SiGit key="SiGit" className="h-20 w-20"/>,
-  <SiGithub key="SiGithub" className="h-20 w-20"/>,
-  <SiGitlab key="SiGitlab" className="h-20 w-20"/>,
-  <SiJest key="SiJest" className="h-20 w-20"/>,
-  <SiRedux key="SiRedux" className="h-20 w-20"/>,
-  <SiPostgresql key="SiPostgresql" className="h-20 w-20"/>,
-  <SiMongodb key="SiMongodb" className="h-20 w-20"/>,
-  <SiUnity key="SiUnity" className="h-20 w-20"/>,
-  <SiTestinglibrary key="SiTestinglibrary" className="h-20 w-20"/>,
-  <SiNodedotjs key="SiNodedotjs" className="h-20 w-20"/>,
-  <SiExpress key="SiExpress" className="h-20 w-20"/>,
+  <SiReact
+    key="SiReact"
+    className={techsClass}
+    dataanswer={[0, 1, 2, 3, 4, 5]}
+  />,
+  <SiNextdotjs key="SiNextdotjs" className={techsClass} dataanswer={[0]} />,
+  <SiJavascript key="SiJavascript" className={techsClass} dataanswer={[0]} />,
+  <SiCss3 key="SiCss3" className={techsClass} dataanswer={[0]} />,
+  <SiHtml5 key="SiHtml5" className={techsClass} dataanswer={[0]} />,
+  <SiCypress key="SiCypress" className={techsClass} dataanswer={[0]} />,
+  <SiDocker key="SiDocker" className={techsClass} dataanswerr={[0]} />,
+  <SiPython key="SiPython" className={techsClass} dataanswer={[0, 3]} />,
+  <SiCsharp key="SiCsharp" className={techsClass} dataanswer={[0]} />,
+  <SiTypescript key="SiTypescript" className={techsClass} dataanswer={[0]} />,
+  <SiGit key="SiGit" className={techsClass} dataanswer={[0]} />,
+  <SiGithub key="SiGithub" className={techsClass} dataanswer={[0]} />,
+  <SiGitlab key="SiGitlab" className={techsClass} dataanswer={[0]} />,
+  <SiJest key="SiJest" className={techsClass} dataanswer={[0]} />,
+  <SiRedux key="SiRedux" className={techsClass} dataanswer={[0, 2, 4]} />,
+  <SiPostgresql key="SiPostgresql" className={techsClass} dataanswer={[0]} />,
+  <SiMongodb key="SiMongodb" className={techsClass} dataanswer={[0]} />,
+  <SiUnity key="SiUnity" className={techsClass} dataanswer={[0, 2, 4]} />,
+  <SiTestinglibrary
+    key="SiTestinglibrary"
+    className={techsClass}
+    dataanswer={[0]}
+  />,
+  <SiNodedotjs key="SiNodedotjs" className={techsClass} dataanswer={[0]} />,
+  <SiExpress key="SiExpress" className={techsClass} dataanswer={[0]} />,
 ];
+
+const pickupNineTechs = () => {
+  const copyArr = techStack.map((tech) => tech);
+  const nineTechs = [];
+  for (let i = 0; i < 9; i++) {
+    const index = Math.floor(Math.random() * copyArr.length);
+    const pickedTech = copyArr.splice(index, 1)[0];
+    nineTechs.push(pickedTech);
+  }
+
+  return nineTechs;
+};
+
+const genRandomDeg = () => (Math.floor(Math.random() * 5) + 1) * 60;
 
 const HomePage = () => {
   const [bodyHeight, setBodyHeight] = useState(0);
   const [bodyWidth, setBodyWidth] = useState(0);
   const [scrollY, setScrollY] = useState(0);
   const [innerWidth, setInnerWidth] = useState(0);
+  const [nineTechs, setNineTechs] = useState(pickupNineTechs());
+  const [currentDeg, setCurrentDeg] = useState([
+    genRandomDeg(),
+    genRandomDeg(),
+    genRandomDeg(),
+    genRandomDeg(),
+    genRandomDeg(),
+    genRandomDeg(),
+    genRandomDeg(),
+    genRandomDeg(),
+    genRandomDeg(),
+  ]);
+
+  const [techsCorrect, setTechsCorrect] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
 
   const isStarted = useSelector(
     (state: RootState) => state.localStorage.isStarted
@@ -74,6 +127,9 @@ const HomePage = () => {
   );
   const isTutorialMet = useSelector(
     (state: RootState) => state.puzzle.isTutorialMet
+  );
+  const isPuzzle1Done = useSelector(
+    (state: RootState) => state.localStorage.isPuzzle1Done
   );
   const dispatch = useDispatch();
 
@@ -90,6 +146,13 @@ const HomePage = () => {
       dispatch(setIsTutorialDone(isTutorialDone === "true" ? true : false));
     }
 
+    if (isPuzzle1Done === null) {
+      const isPuzzle1Done = localStorage.getItem(
+        LocalStrageValue.is_puzzle1_done
+      );
+      dispatch(setIsPuzzle1Done(isPuzzle1Done === "true" ? true : false));
+    }
+
     document.body.onscroll = () => {
       setBodyHeight(document.body.scrollHeight);
       setBodyWidth(document.body.scrollWidth);
@@ -100,7 +163,7 @@ const HomePage = () => {
     return () => {
       document.body.onscroll = null;
     };
-  }, [isStarted, isTutorialDone, dispatch]);
+  }, [isStarted, isTutorialDone, isPuzzle1Done, dispatch]);
 
   useEffect(() => {
     if (
@@ -121,7 +184,24 @@ const HomePage = () => {
     dispatch,
   ]);
 
-  useEffect(() => {}, [dispatch]);
+  useEffect(() => {
+    setTechsCorrect(() => {
+      return nineTechs.map((item, i) => {
+        const answer: number[] = item.props.dataanswer;
+        if (!answer) return false;
+        return answer.some((num) => num === (currentDeg[i] % 360) / 60);
+      });
+    });
+  }, [currentDeg, nineTechs]);
+
+  useEffect(() => {
+    dispatch(setIsPuzzle1Met(techsCorrect.every((bool) => bool)));
+  }, [techsCorrect, dispatch]);
+
+  useEffect(() => {
+    if (!isPuzzle1Done) return;
+    setCurrentDeg([0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  }, [isPuzzle1Done]);
 
   return (
     <main>
@@ -198,16 +278,37 @@ const HomePage = () => {
         <section className="relative h-screen w-screen">
           {isTutorialDone && (
             <>
-
-              <div className="h-full w-screen flex justify-center items-center">
-                <ul className="grid grid-cols-3">
-                  {techStack.map((item, i) => {
+              <div className="h-[20%] w-screen flex justify-center items-center text-dim-gray">
+                My TeckStack
+              </div>
+              <div className="h-[80%] w-screen flex justify-center items-center pb-72">
+                <ul className="grid grid-cols-3 gap-10">
+                  {nineTechs.map((item, i) => {
                     return (
                       <motion.li
                         key={"li_" + item.key}
                         initial={{ opacity: 0, x: -30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.3, delay: i * 0.1 }}
+                        animate={{
+                          opacity: 1,
+                          x: 0,
+                          transform: `rotate(${currentDeg[i]}deg)`,
+                        }}
+                        transition={{
+                          opacity: { duration: 0.3, delay: i * 0.1 },
+                          x: { duration: 0.3, delay: i * 0.1 },
+                          transform: { duration: 0.3 },
+                        }}
+                        onClick={() => {
+                          setCurrentDeg((pre) => {
+                            if (isPuzzle1Done) return pre;
+                            const newArr = pre.map((num) => num);
+                            newArr[i] = newArr[i] + 60;
+                            return newArr;
+                          });
+                        }}
+                        whileTap={{
+                          transform: isPuzzle1Done ? "rotate(60deg)" : "",
+                        }}
                       >
                         {item}
                       </motion.li>

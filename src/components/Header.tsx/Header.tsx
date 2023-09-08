@@ -12,6 +12,7 @@ import {
   incrementFound,
   removeAll,
   setIsTutorialDone,
+  setIsPuzzle1Done,
 } from "@/redux/reducers/localStrageSlice";
 import { LocalStrageValue } from "@/types/localStrageValues";
 import { RootState } from "@/redux/store";
@@ -40,8 +41,14 @@ function Header() {
   const isTutorialMet = useSelector(
     (state: RootState) => state.puzzle.isTutorialMet
   );
+  const isPuzzle1Met = useSelector(
+    (state: RootState) => state.puzzle.isPuzzle1Met
+  );
   const isTutorialDone = useSelector(
     (state: RootState) => state.localStorage.isTutorialDone
+  );
+  const isPuzzle1Done = useSelector(
+    (state: RootState) => state.localStorage.isPuzzle1Done
   );
   const foundTotal = useSelector(
     (state: RootState) => state.localStorage.foundTotal
@@ -60,6 +67,12 @@ function Header() {
           dispatch(incrementFound(null));
         }, 500);
       }, 200);
+    } else if (isPuzzle1Met && !isPuzzle1Done) {
+      playSoundCorrect();
+      dispatch(setIsPuzzle1Done(true));
+      setTimeout(() => {
+        dispatch(incrementFound(null));
+      }, 500);
     } else {
       playclickSound();
     }
@@ -73,6 +86,7 @@ function Header() {
   }, [dispatch]);
 
   useEffect(() => {
+    if (isTutorialDone || !isTutorialMet) return;
     const breathButton = setInterval(() => {
       if (
         isTutorialMet &&
@@ -154,7 +168,7 @@ function Header() {
         >
           <motion.div
             key={foundTotal}
-            initial={{ y: foundTotal ? 50 : 0}}
+            initial={{ y: foundTotal ? 50 : 0 }}
             animate={{ y: 0 }}
             exit={{ y: foundTotal ? -50 : 0 }}
           >
