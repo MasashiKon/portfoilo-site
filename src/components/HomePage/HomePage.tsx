@@ -206,6 +206,25 @@ const HomePage = () => {
   return (
     <main>
       <section className="flex justify-center items-center h-screen w-screen relative">
+        <motion.li
+          animate={{
+            opacity: 1,
+            x: 0,
+            transform: `rotate(60deg)`,
+          }}
+          transition={{
+            opacity: { duration: 0.3, delay: 0.1 },
+            x: { duration: 0.3, delay: 0.1 },
+            transform: { duration: 0.3 },
+          }}
+          onClick={() => {}}
+        >
+          <SiUnity
+            key="SiUnity"
+            className={techsClass}
+            dataanswer={[0, 2, 4]}
+          />
+        </motion.li>
         {isStarted !== null && !isStarted && (
           <div
             className={`cursor-pointer hover:text-xl active:text-sm select-none transition-{font-size} transition-{line-height} duration-200`}
@@ -299,6 +318,8 @@ const HomePage = () => {
                           transform: { duration: 0.3 },
                         }}
                         onClick={(e) => {
+                          console.log(e.target);
+
                           e.preventDefault();
                           setCurrentDeg((pre) => {
                             if (isPuzzle1Done) return pre;
@@ -308,7 +329,7 @@ const HomePage = () => {
                           });
                         }}
                         whileTap={{
-                          transform: isPuzzle1Done ? "rotate(60deg)" : "",
+                          transform: isPuzzle1Done ? "rotate(60deg)" :  `rotate(${currentDeg[i]}deg)`,
                         }}
                       >
                         {item}
