@@ -128,6 +128,9 @@ const HomePage = () => {
   const isTutorialMet = useSelector(
     (state: RootState) => state.puzzle.isTutorialMet
   );
+  const isPuzzle1Met = useSelector(
+    (state: RootState) => state.puzzle.isPuzzle1Met
+  );
   const isPuzzle1Done = useSelector(
     (state: RootState) => state.localStorage.isPuzzle1Done
   );
@@ -299,9 +302,6 @@ const HomePage = () => {
                           transform: { duration: 0.3 },
                         }}
                         onClick={(e) => {
-                          console.log(e.target);
-
-                          e.preventDefault();
                           setCurrentDeg((pre) => {
                             if (isPuzzle1Done) return pre;
                             const newArr = pre.map((num) => num);
@@ -309,9 +309,13 @@ const HomePage = () => {
                             return newArr;
                           });
                         }}
-                        whileTap={{
-                          transform: isPuzzle1Done ? "rotate(60deg)" :  `rotate(${currentDeg[i]}deg)`,
-                        }}
+                        whileTap={
+                          isPuzzle1Done
+                            ? {
+                                transform: "rotate(60deg)",
+                              }
+                            : undefined
+                        }
                       >
                         {item}
                       </motion.li>
