@@ -3,7 +3,7 @@
 import { Provider } from "react-redux";
 import { store } from "@/redux/store";
 
-import Header from "../Header.tsx/Header";
+import Header from "../Header/Header";
 
 const ReduxProvider = ({ children }: { children: React.ReactNode }) => {
   return (

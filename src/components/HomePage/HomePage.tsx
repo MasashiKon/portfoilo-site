@@ -39,7 +39,6 @@ import {
   setIsTutorialMet,
   setIsPuzzle1Met,
 } from "@/redux/reducers/puzzleSlice";
-import { transform } from "typescript";
 
 const techsClass = "h-20 w-20 text-dim-gray select-none";
 
@@ -54,7 +53,7 @@ const techStack = [
   <SiCss3 key="SiCss3" className={techsClass} dataanswer={[0]} />,
   <SiHtml5 key="SiHtml5" className={techsClass} dataanswer={[0]} />,
   <SiCypress key="SiCypress" className={techsClass} dataanswer={[0]} />,
-  <SiDocker key="SiDocker" className={techsClass} dataanswerr={[0]} />,
+  <SiDocker key="SiDocker" className={techsClass} dataanswer={[0]} />,
   <SiPython key="SiPython" className={techsClass} dataanswer={[0, 3]} />,
   <SiCsharp key="SiCsharp" className={techsClass} dataanswer={[0]} />,
   <SiTypescript key="SiTypescript" className={techsClass} dataanswer={[0]} />,
@@ -137,25 +136,6 @@ const HomePage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (isStarted === null) {
-      const isStartedLocal = localStorage.getItem(LocalStrageValue.is_started);
-      dispatch(setIsStarted(isStartedLocal === "true" ? true : false));
-    }
-
-    if (isTutorialDone === null) {
-      const isTutorialDone = localStorage.getItem(
-        LocalStrageValue.is_tutorial_done
-      );
-      dispatch(setIsTutorialDone(isTutorialDone === "true" ? true : false));
-    }
-
-    if (isPuzzle1Done === null) {
-      const isPuzzle1Done = localStorage.getItem(
-        LocalStrageValue.is_puzzle1_done
-      );
-      dispatch(setIsPuzzle1Done(isPuzzle1Done === "true" ? true : false));
-    }
-
     document.body.onscroll = () => {
       setBodyHeight(document.body.scrollHeight);
       setBodyWidth(document.body.scrollWidth);
@@ -166,7 +146,7 @@ const HomePage = () => {
     return () => {
       document.body.onscroll = null;
     };
-  }, [isStarted, isTutorialDone, isPuzzle1Done, dispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (
@@ -191,7 +171,6 @@ const HomePage = () => {
     setTechsCorrect(() => {
       return nineTechs.map((item, i) => {
         const answer: number[] = item.props.dataanswer;
-        if (!answer) return false;
         return answer.some((num) => num === (currentDeg[i] % 360) / 60);
       });
     });
@@ -271,7 +250,7 @@ const HomePage = () => {
             width={100}
             height={100}
             alt="tete"
-            className={`fixed safariImg select-none -left-[100px] bottom-[10%] ${
+            className={`fixed safariImg select-none -left-[100px] bottom-[10%] scale-50 md:scale-100 ${
               isStarted && "translate-x-[200px]"
             }`}
           />
@@ -280,11 +259,11 @@ const HomePage = () => {
       {isStarted && (
         <section className="relative h-screen w-screen">
           {isTutorialDone && (
-            <>
-              <div className="h-[20%] w-screen flex justify-center items-center text-dim-gray">
-                My TeckStack
-              </div>
-              <div className="h-[80%] w-screen flex justify-center items-center pb-72">
+            <div className="pt-40">
+              <motion.div initial={{opacity: 0}} animate={{opacity: 1}} transition={{delay: 0.8}} className="w-screen flex justify-center items-center text-dim-gray font-bold">
+                My TechStack
+              </motion.div>
+              <div className="w-screen flex justify-center items-center pt-10">
                 <ul className="grid grid-cols-3 gap-10">
                   {nineTechs.map((item, i) => {
                     return (
@@ -297,8 +276,8 @@ const HomePage = () => {
                           transform: `rotate(${currentDeg[i]}deg)`,
                         }}
                         transition={{
-                          opacity: { duration: 0.3, delay: i * 0.1 },
-                          x: { duration: 0.3, delay: i * 0.1 },
+                          opacity: { duration: 0.3, delay: 0.8 + (i * 0.1) },
+                          x: { duration: 0.3, delay: 0.8 + (i * 0.1) },
                           transform: { duration: 0.3 },
                         }}
                         onClick={(e) => {
@@ -323,14 +302,14 @@ const HomePage = () => {
                   })}
                 </ul>
               </div>
-            </>
+            </div>
           )}
           <Image
             src={"/deer1.svg"}
             width={100}
             height={100}
             alt="tete"
-            className={`absolute safariImg select-none left-[100px] bottom-[10%] ${
+            className={`absolute safariImg select-none left-[100px] bottom-[10%] scale-50 md:scale-100 ${
               !isTutorialDone && "opacity-40"
             }`}
           />
