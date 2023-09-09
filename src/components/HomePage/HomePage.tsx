@@ -250,8 +250,8 @@ const HomePage = () => {
             width={100}
             height={100}
             alt="tete"
-            className={`fixed safariImg select-none -left-[100px] bottom-[10%] scale-50 md:scale-100 ${
-              isStarted && "translate-x-[200px]"
+            className={`fixed safariImg select-none -left-[100px]  bottom-[-5%] sm:bottom-[10%] scale-50 sm:scale-100 ${
+              isStarted && "translate-x-[100px] sm:translate-x-[200px]"
             }`}
           />
         )}
@@ -260,7 +260,12 @@ const HomePage = () => {
         <section className="relative h-screen w-screen">
           {isTutorialDone && (
             <div className="pt-40">
-              <motion.div initial={{opacity: 0}} animate={{opacity: 1}} transition={{delay: 0.8}} className="w-screen flex justify-center items-center text-dim-gray font-bold">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8 }}
+                className="w-screen flex justify-center items-center text-dim-gray font-bold"
+              >
                 My TechStack
               </motion.div>
               <div className="w-screen flex justify-center items-center pt-10">
@@ -276,8 +281,8 @@ const HomePage = () => {
                           transform: `rotate(${currentDeg[i]}deg)`,
                         }}
                         transition={{
-                          opacity: { duration: 0.3, delay: 0.8 + (i * 0.1) },
-                          x: { duration: 0.3, delay: 0.8 + (i * 0.1) },
+                          opacity: { duration: 0.3, delay: 0.8 + i * 0.1 },
+                          x: { duration: 0.3, delay: 0.8 + i * 0.1 },
                           transform: { duration: 0.3 },
                         }}
                         onClick={(e) => {
@@ -309,7 +314,7 @@ const HomePage = () => {
             width={100}
             height={100}
             alt="tete"
-            className={`absolute safariImg select-none left-[100px] bottom-[10%] scale-50 md:scale-100 ${
+            className={`absolute safariImg select-none sm:left-[100px] bottom-[-5%] sm:bottom-[10%] scale-50 sm:scale-100 ${
               !isTutorialDone && "opacity-40"
             }`}
           />
