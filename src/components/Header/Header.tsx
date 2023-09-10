@@ -204,10 +204,10 @@ function Header() {
         }`}
       >
         <div>
-          <Link href={"/"} className="block">
-            Header
+          <Link href={"/"} className="block font-bold text-lg">
+            Home
           </Link>
-          <button onClick={() => dispatch(removeAll("all"))}>reset</button>
+          <button className="text-sm" onClick={() => dispatch(removeAll("all"))}>Reset</button>
         </div>
         {isTutorialDone && (
           <motion.ul
@@ -228,11 +228,11 @@ function Header() {
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.3, delay: 0.5 }}
                 >
-                  <Link href={"/tsttet"}>pepe</Link>
+                  <Link href={"/item"}>Item</Link>
                 </motion.li>
               ) : (
                 <motion.li layout>
-                  <Link href={"/tsttet"}>popo</Link>
+                  <Link href={"/item"}>Item</Link>
                 </motion.li>
               ))}
           </motion.ul>
