@@ -245,8 +245,8 @@ const HomePage = () => {
             src={"/images/deer1.svg"}
             width={100}
             height={100}
-            alt="tete"
-            className={`fixed safariImg select-none -left-[100px] sm:bottom-[10%] scale-50 sm:scale-100 ${
+            alt="deer"
+            className={`fixed safariImg select-none -left-[100px] bottom-[0%] sm:bottom-[10%] scale-50 sm:scale-100 ${
               isStarted && "translate-x-[100px] sm:translate-x-[200px]"
             }`}
           />
@@ -309,8 +309,8 @@ const HomePage = () => {
             src={"/images/deer1.svg"}
             width={100}
             height={100}
-            alt="tete"
-            className={`absolute safariImg select-none sm:left-[100px] sm:bottom-[10%] scale-50 sm:scale-100 ${
+            alt="deer"
+            className={`absolute safariImg select-none bottom-[0%] sm:left-[100px] sm:bottom-[10%] scale-50 sm:scale-100 ${
               !isTutorialDone && "opacity-40"
             }`}
           />
