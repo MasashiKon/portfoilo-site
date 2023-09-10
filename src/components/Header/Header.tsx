@@ -1,7 +1,7 @@
 "use client";
 
 import { useDispatch, useSelector } from "react-redux";
-import { HiOutlineSearchCircle } from "react-icons/hi";
+import { BsExclamationCircle } from "react-icons/bs";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -55,9 +55,7 @@ function Header() {
   const isPuzzle1Done = useSelector(
     (state: RootState) => state.localStorage.isPuzzle1Done
   );
-  const hasItem = useSelector(
-    (state: RootState) => state.localStorage.hasItem
-  );
+  const hasItem = useSelector((state: RootState) => state.localStorage.hasItem);
   const foundTotal = useSelector(
     (state: RootState) => state.localStorage.foundTotal
   );
@@ -82,7 +80,7 @@ function Header() {
         dispatch(incrementFound(null));
         setTimeout(() => {
           dispatch(setHasItem(true));
-        }, 1000)
+        }, 1000);
       }, 500);
     } else {
       playclickSound();
@@ -117,9 +115,7 @@ function Header() {
     }
 
     if (hasItem === null) {
-      const isPuzzle1Done = localStorage.getItem(
-        LocalStrageValue.has_item
-      );
+      const hasItem = localStorage.getItem(LocalStrageValue.has_item);
       dispatch(setHasItem(hasItem === "true" ? true : false));
     }
   });
@@ -180,14 +176,14 @@ function Header() {
   }, [isTutorialMet, isTutorialDone, intervalCount, buttonBorderAlpha.status]);
 
   return (
-    <div className="relative z-10">
+    <div className="relative z-20">
       <div
-        className={`fixed h-28 w-screen flex justify-between items-center p-5 transition-[border-color] duration-700 ${
-          isTutorialDone && "border-english-violet border-b-4 border-dashed"
+        className={`fixed h-28 w-screen flex justify-between items-center p-5 transition-[border-color,background-color] duration-700 ${
+          isTutorialDone && "border-english-violet border-b-4 border-dashed bg-dim-gray/90 text-lime-50"
         }`}
       >
         <div>
-          <p>Header</p>
+          <Link href={"/"} className="block">Header</Link>
           <button onClick={() => dispatch(removeAll("all"))}>reset</button>
         </div>
         {isTutorialDone && (
@@ -200,7 +196,7 @@ function Header() {
               <Link href={"/gallery"}>Gallery</Link>
             </motion.li>
             <motion.li layout>
-              <Link href={"/matter"}>tewtaw</Link>
+              <Link href={"/contact-me"}>Contact me</Link>
             </motion.li>
             {isPuzzle1Done &&
               (!hasItem ? (
@@ -228,7 +224,7 @@ function Header() {
           onClick={handleCheckButton}
           ref={checkButton}
         >
-          <HiOutlineSearchCircle className="w-20 h-20 active:scale-95" />
+          <BsExclamationCircle className="w-20 h-20 active:scale-95" />
         </button>
       </div>
       {isTutorialDone && (

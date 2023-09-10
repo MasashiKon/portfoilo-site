@@ -2,9 +2,9 @@ let soundCorrect: HTMLAudioElement | null;
 let clickSound: HTMLAudioElement | null;
 
 if (typeof Audio !== "undefined") {
-  soundCorrect = new Audio("soundCorrect.mp3");
+  soundCorrect = new Audio("/sounds/soundCorrect.mp3");
   soundCorrect.volume = 0.3;
-  clickSound = new Audio("click.mp3");
+  clickSound = new Audio("/sounds/click.mp3");
   clickSound.volume = 0.1;
 }
 

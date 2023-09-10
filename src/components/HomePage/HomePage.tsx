@@ -30,11 +30,7 @@ import {
 
 import { LocalStrageValue } from "@/types/localStrageValues";
 import { RootState } from "@/redux/store";
-import {
-  setIsStarted,
-  setIsTutorialDone,
-  setIsPuzzle1Done,
-} from "@/redux/reducers/localStrageSlice";
+import { setIsStarted } from "@/redux/reducers/localStrageSlice";
 import {
   setIsTutorialMet,
   setIsPuzzle1Met,
@@ -200,7 +196,7 @@ const HomePage = () => {
           </div>
         )}
         <Image
-          src={"/cloud1.svg"}
+          src={"/images/cloud1.svg"}
           width={200}
           height={200}
           alt="tete"
@@ -209,7 +205,7 @@ const HomePage = () => {
           }`}
         />
         <Image
-          src={"/tree1.svg"}
+          src={"/images/tree1.svg"}
           width={200}
           height={200}
           alt="tete"
@@ -218,7 +214,7 @@ const HomePage = () => {
           }`}
         />
         <Image
-          src={"/tree1.svg"}
+          src={"/images/tree1.svg"}
           width={200}
           height={200}
           alt="tete"
@@ -227,7 +223,7 @@ const HomePage = () => {
           }`}
         />
         <Image
-          src={"/tree1.svg"}
+          src={"/images/tree1.svg"}
           width={200}
           height={200}
           alt="tete"
@@ -236,7 +232,7 @@ const HomePage = () => {
           }`}
         />
         <Image
-          src={"/tree1.svg"}
+          src={"/images/tree1.svg"}
           width={200}
           height={200}
           alt="tete"
@@ -246,11 +242,11 @@ const HomePage = () => {
         />
         {!isTutorialDone && (
           <Image
-            src={"/deer1.svg"}
+            src={"/images/deer1.svg"}
             width={100}
             height={100}
             alt="tete"
-            className={`fixed safariImg select-none -left-[100px]  bottom-[-5%] sm:bottom-[10%] scale-50 sm:scale-100 ${
+            className={`fixed safariImg select-none -left-[100px] sm:bottom-[10%] scale-50 sm:scale-100 ${
               isStarted && "translate-x-[100px] sm:translate-x-[200px]"
             }`}
           />
@@ -310,11 +306,11 @@ const HomePage = () => {
             </div>
           )}
           <Image
-            src={"/deer1.svg"}
+            src={"/images/deer1.svg"}
             width={100}
             height={100}
             alt="tete"
-            className={`absolute safariImg select-none sm:left-[100px] bottom-[-5%] sm:bottom-[10%] scale-50 sm:scale-100 ${
+            className={`absolute safariImg select-none sm:left-[100px] sm:bottom-[10%] scale-50 sm:scale-100 ${
               !isTutorialDone && "opacity-40"
             }`}
           />
