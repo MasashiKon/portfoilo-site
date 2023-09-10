@@ -4,6 +4,7 @@ import { Puzzle } from "@/types/puzzleType";
 const initialState: Puzzle = {
   isTutorialMet: false,
   isPuzzle1Met: false,
+  isPuzzle2Met: false,
 };
 
 export const puzzleSlice = createSlice({
@@ -16,11 +17,15 @@ export const puzzleSlice = createSlice({
     setIsPuzzle1Met: (state, action) => {
       state.isPuzzle1Met = action.payload;
     },
+    setIsPuzzle2Met: (state, action) => {
+      state.isPuzzle2Met = action.payload;
+    },
     removeAll: (state, _) => {
       state.isTutorialMet = false;
     },
   },
 });
 
-export const { setIsTutorialMet, setIsPuzzle1Met } = puzzleSlice.actions;
+export const { setIsTutorialMet, setIsPuzzle1Met, setIsPuzzle2Met } =
+  puzzleSlice.actions;
 export default puzzleSlice.reducer;

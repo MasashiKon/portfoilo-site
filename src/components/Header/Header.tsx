@@ -14,6 +14,7 @@ import {
   removeAll,
   setIsTutorialDone,
   setIsPuzzle1Done,
+  setIsPuzzle2Done,
   setHasItem,
 } from "@/redux/reducers/localStrageSlice";
 import { LocalStrageValue } from "@/types/localStrageValues";
@@ -46,6 +47,9 @@ function Header() {
   const isPuzzle1Met = useSelector(
     (state: RootState) => state.puzzle.isPuzzle1Met
   );
+  const isPuzzle2Met = useSelector(
+    (state: RootState) => state.puzzle.isPuzzle2Met
+  );
   const isStarted = useSelector(
     (state: RootState) => state.localStorage.isStarted
   );
@@ -54,6 +58,9 @@ function Header() {
   );
   const isPuzzle1Done = useSelector(
     (state: RootState) => state.localStorage.isPuzzle1Done
+  );
+  const isPuzzle2Done = useSelector(
+    (state: RootState) => state.localStorage.isPuzzle2Done
   );
   const hasItem = useSelector((state: RootState) => state.localStorage.hasItem);
   const foundTotal = useSelector(
@@ -81,6 +88,12 @@ function Header() {
         setTimeout(() => {
           dispatch(setHasItem(true));
         }, 1000);
+      }, 500);
+    } else if (isPuzzle2Met && !isPuzzle2Done) {
+      playSoundCorrect();
+      dispatch(setIsPuzzle2Done(true));
+      setTimeout(() => {
+        dispatch(incrementFound(null));
       }, 500);
     } else {
       playclickSound();
@@ -112,6 +125,13 @@ function Header() {
         LocalStrageValue.is_puzzle1_done
       );
       dispatch(setIsPuzzle1Done(isPuzzle1Done === "true" ? true : false));
+    }
+
+    if (isPuzzle2Done === null) {
+      const isPuzzle2Done = localStorage.getItem(
+        LocalStrageValue.is_puzzle2_done
+      );
+      dispatch(setIsPuzzle2Done(isPuzzle2Done === "true" ? true : false));
     }
 
     if (hasItem === null) {
@@ -179,11 +199,14 @@ function Header() {
     <div className="relative z-20">
       <div
         className={`fixed h-28 w-screen flex justify-between items-center p-5 transition-[border-color,background-color] duration-700 ${
-          isTutorialDone && "border-english-violet border-b-4 border-dashed bg-dim-gray/90 text-lime-50"
+          isTutorialDone &&
+          "border-english-violet border-b-4 border-dashed bg-dim-gray/90 text-lime-50"
         }`}
       >
         <div>
-          <Link href={"/"} className="block">Header</Link>
+          <Link href={"/"} className="block">
+            Header
+          </Link>
           <button onClick={() => dispatch(removeAll("all"))}>reset</button>
         </div>
         {isTutorialDone && (

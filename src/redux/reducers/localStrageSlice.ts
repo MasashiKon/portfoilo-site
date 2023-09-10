@@ -5,6 +5,7 @@ const initialState: LocalStrage = {
   isStarted: null,
   isTutorialDone: null,
   isPuzzle1Done: null,
+  isPuzzle2Done: null,
   hasItem: null,
   foundTotal: 0,
 };
@@ -24,6 +25,10 @@ export const localStrageSlice = createSlice({
     setIsPuzzle1Done: (state, action) => {
       localStorage.setItem(LocalStrageValue.is_puzzle1_done, action.payload);
       state.isPuzzle1Done = action.payload;
+    },
+    setIsPuzzle2Done: (state, action) => {
+      localStorage.setItem(LocalStrageValue.is_puzzle2_done, action.payload);
+      state.isPuzzle2Done = action.payload;
     },
     setHasItem: (state, action) => {
       localStorage.setItem(LocalStrageValue.has_item, action.payload);
@@ -61,6 +66,7 @@ export const localStrageSlice = createSlice({
       state.isStarted = null;
       state.isTutorialDone = null;
       state.isPuzzle1Done = null;
+      state.isPuzzle2Done = null;
       state.hasItem = null;
       state.foundTotal = 0;
     },
@@ -71,6 +77,7 @@ export const {
   setIsStarted,
   setIsTutorialDone,
   setIsPuzzle1Done,
+  setIsPuzzle2Done,
   setHasItem,
   setfoundTotalToRedux,
   incrementFound,
