@@ -147,7 +147,7 @@ const HomePage = () => {
   useEffect(() => {
     if (
       isStarted &&
-      scrollY >= bodyHeight - innerWidth - (bodyWidth < 768 ? 80 : 0)
+      scrollY >= bodyHeight - innerWidth
     ) {
       dispatch(setIsTutorialMet(true));
     } else {
@@ -255,7 +255,7 @@ const HomePage = () => {
       {isStarted && (
         <section className="relative h-screen w-screen">
           {isTutorialDone && (
-            <div className="pt-40">
+            <div className="pt-40 z-10">
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
