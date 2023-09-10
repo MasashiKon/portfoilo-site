@@ -207,7 +207,14 @@ function Header() {
           <Link href={"/"} className="block font-bold text-lg">
             Home
           </Link>
-          <button className="text-sm" onClick={() => dispatch(removeAll("all"))}>Reset</button>
+          {isTutorialDone && (
+            <button
+              className="text-sm"
+              onClick={() => dispatch(removeAll("all"))}
+            >
+              Reset
+            </button>
+          )}
         </div>
         {isTutorialDone && (
           <motion.ul

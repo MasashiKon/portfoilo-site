@@ -26,19 +26,11 @@ const GalleryPage = () => {
 
   const dispatch = useDispatch();
 
-  if (!isTutorialDone) {
-    router.push("/");
-  }
-
-  if (
-    isPuzzle2Done &&
-    (!isRizard2Shown || !isRizard2Shown || !isRizard2Shown || !isRizard2Shown)
-  ) {
-    setIsRizard1Shown(true);
-    setIsRizard2Shown(true);
-    setIsRizard3Shown(true);
-    setIsRizard4Shown(true);
-  }
+  useEffect(() => {
+    if (!isTutorialDone) {
+      router.push("/");
+    }
+  });
 
   useEffect(() => {
     if (isPuzzle2Done) return;
@@ -94,6 +86,16 @@ const GalleryPage = () => {
     isPuzzle2Done,
     dispatch,
   ]);
+
+  if (
+    isPuzzle2Done &&
+    (!isRizard2Shown || !isRizard2Shown || !isRizard2Shown || !isRizard2Shown)
+  ) {
+    setIsRizard1Shown(true);
+    setIsRizard2Shown(true);
+    setIsRizard3Shown(true);
+    setIsRizard4Shown(true);
+  }
 
   return (
     <div className="pt-28 h-screen w-screen">
