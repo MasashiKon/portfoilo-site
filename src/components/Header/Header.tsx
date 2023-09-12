@@ -39,6 +39,7 @@ function Header() {
     }
   );
   const [intervalCount, setIntervalCount] = useState(0);
+  const [isItemWindowOpen, setIsItemWindowOpen] = useState(false);
 
   const dispatch = useDispatch();
   const isTutorialMet = useSelector(
@@ -220,13 +221,23 @@ function Header() {
           <motion.ul
             initial={{ y: "-100px" }}
             animate={{ y: "0px" }}
-            className="w-1/2 flex justify-evenly"
+            className="w-1/2 flex justify-evenly items-center"
           >
             <motion.li layout>
-              <Link href={"/gallery"}>Gallery</Link>
+              <Link
+                href={"/gallery"}
+                className="text-center grid place-content-center"
+              >
+                Gallery
+              </Link>
             </motion.li>
             <motion.li layout>
-              <Link href={"/contact-me"}>Contact me</Link>
+              <Link
+                href={"/contact-me"}
+                className="text-center grid place-content-center"
+              >
+                Contact me
+              </Link>
             </motion.li>
             {isPuzzle1Done &&
               (!hasItem ? (
@@ -235,11 +246,21 @@ function Header() {
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.3, delay: 0.5 }}
                 >
-                  <Link href={"/item"}>Item</Link>
+                  <div
+                    onClick={() => setIsItemWindowOpen(!isItemWindowOpen)}
+                    className="select-none cursor-pointer text-center grid place-content-center"
+                  >
+                    Item
+                  </div>
                 </motion.li>
               ) : (
                 <motion.li layout>
-                  <Link href={"/item"}>Item</Link>
+                  <div
+                    onClick={() => setIsItemWindowOpen(!isItemWindowOpen)}
+                    className="select-none cursor-pointer text-center grid place-content-center"
+                  >
+                    Item
+                  </div>
                 </motion.li>
               ))}
           </motion.ul>
@@ -272,6 +293,11 @@ function Header() {
             {foundTotal}
           </motion.div>
         </motion.div>
+      )}
+      {isItemWindowOpen && (
+        <div className="w-[80%] h-20 absolute rounded-lg border-olivine border-2 mt-28 sm:mt-32 flex justify-evenly items-center bg-mindaro/20">
+          Items not ready yet
+        </div>
       )}
     </div>
   );
