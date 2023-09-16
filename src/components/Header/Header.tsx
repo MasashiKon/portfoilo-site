@@ -195,6 +195,18 @@ function Header() {
   ]);
 
   useEffect(() => {
+    if (hasWateringCan) {
+      setItems((pre) => {
+        const newArr = pre.filter((item) => item.name !== Items.wateringCan);
+        return [
+          ...newArr,
+          { name: Items.wateringCan, path: ItemsPath.wateringCan },
+        ];
+      });
+    }
+  }, [hasWateringCan]);
+
+  useEffect(() => {
     if (isTutorialDone) return;
     const breathButton = setInterval(() => {
       if (
