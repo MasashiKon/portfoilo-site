@@ -168,12 +168,19 @@ function Header() {
       dispatch(
         setHasWateringCan(hasWateringCanLocal === "true" ? true : false)
       );
-      setItems((pre) => {
-        return [
-          ...pre,
-          { name: Items.wateringCan, path: ItemsPath.wateringCan },
-        ];
-      });
+      if (hasWateringCanLocal === "true") {
+        setItems((pre) => {
+          const newArr = pre.filter((item) => item.name !== Items.wateringCan);
+          return [
+            ...newArr,
+            { name: Items.wateringCan, path: ItemsPath.wateringCan },
+          ];
+        });
+      } else {
+        setItems((pre) => {
+          return pre.filter((item) => item.name !== Items.wateringCan);
+        });
+      }
     }
   }, [
     dispatch,
