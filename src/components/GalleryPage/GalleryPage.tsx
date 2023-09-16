@@ -178,7 +178,7 @@ const GalleryPage = () => {
           {isRizard2Shown && (
             <motion.div
               initial={{ y: "-40px" }}
-              animate={{ y: "20px" }}
+              animate={{ y: "25px" }}
               exit={{ y: "-40px"}}
               className={`absolute left-[70%] top-[38%] sm:top-[40%] md:top-[38%] lg:top-[44%]`}
             >
