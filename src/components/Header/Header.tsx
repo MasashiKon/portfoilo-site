@@ -5,6 +5,7 @@ import { BsExclamationCircle } from "react-icons/bs";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 import {
   removeItem,
@@ -15,11 +16,14 @@ import {
   setIsTutorialDone,
   setIsPuzzle1Done,
   setIsPuzzle2Done,
+  setIsPuzzle3Done,
   setHasItem,
+  setHasWateringCan,
 } from "@/redux/reducers/localStrageSlice";
 import { LocalStrageValue } from "@/types/localStrageValues";
 import { RootState } from "@/redux/store";
-import { playSoundCorrect, playclickSound } from "@/utils/playSound";
+import { playSoundCorrect, playClickSound } from "@/utils/playSound";
+import { Items, Item, ItemsPath } from "@/types/itemsEnum";
 
 enum buttonBorderStatus {
   inc = "inc",
@@ -40,6 +44,7 @@ function Header() {
   );
   const [intervalCount, setIntervalCount] = useState(0);
   const [isItemWindowOpen, setIsItemWindowOpen] = useState(false);
+  const [items, setItems] = useState<Item[]>([]);
 
   const dispatch = useDispatch();
   const isTutorialMet = useSelector(
@@ -51,6 +56,7 @@ function Header() {
   const isPuzzle2Met = useSelector(
     (state: RootState) => state.puzzle.isPuzzle2Met
   );
+  const cosmosPos = useSelector((state: RootState) => state.puzzle.cosmosPos);
   const isStarted = useSelector(
     (state: RootState) => state.localStorage.isStarted
   );
@@ -63,7 +69,13 @@ function Header() {
   const isPuzzle2Done = useSelector(
     (state: RootState) => state.localStorage.isPuzzle2Done
   );
+  const isPuzzle3Done = useSelector(
+    (state: RootState) => state.localStorage.isPuzzle3Done
+  );
   const hasItem = useSelector((state: RootState) => state.localStorage.hasItem);
+  const hasWateringCan = useSelector(
+    (state: RootState) => state.localStorage.hasWateringCan
+  );
   const foundTotal = useSelector(
     (state: RootState) => state.localStorage.foundTotal
   );
@@ -97,7 +109,7 @@ function Header() {
         dispatch(incrementFound(null));
       }, 500);
     } else {
-      playclickSound();
+      playClickSound();
     }
   };
 
@@ -115,31 +127,65 @@ function Header() {
     }
 
     if (isTutorialDone === null) {
-      const isTutorialDone = localStorage.getItem(
+      const isTutorialDoneLocal = localStorage.getItem(
         LocalStrageValue.is_tutorial_done
       );
-      dispatch(setIsTutorialDone(isTutorialDone === "true" ? true : false));
+      dispatch(
+        setIsTutorialDone(isTutorialDoneLocal === "true" ? true : false)
+      );
     }
 
     if (isPuzzle1Done === null) {
-      const isPuzzle1Done = localStorage.getItem(
+      const isPuzzle1DoneLocal = localStorage.getItem(
         LocalStrageValue.is_puzzle1_done
       );
-      dispatch(setIsPuzzle1Done(isPuzzle1Done === "true" ? true : false));
+      dispatch(setIsPuzzle1Done(isPuzzle1DoneLocal === "true" ? true : false));
     }
 
     if (isPuzzle2Done === null) {
-      const isPuzzle2Done = localStorage.getItem(
+      const isPuzzle2DoneLocal = localStorage.getItem(
         LocalStrageValue.is_puzzle2_done
       );
-      dispatch(setIsPuzzle2Done(isPuzzle2Done === "true" ? true : false));
+      dispatch(setIsPuzzle2Done(isPuzzle2DoneLocal === "true" ? true : false));
+    }
+
+    if (isPuzzle3Done === null) {
+      const isPuzzle3DoneLocal = localStorage.getItem(
+        LocalStrageValue.is_puzzle3_done
+      );
+      dispatch(setIsPuzzle3Done(isPuzzle3DoneLocal === "true" ? true : false));
     }
 
     if (hasItem === null) {
-      const hasItem = localStorage.getItem(LocalStrageValue.has_item);
-      dispatch(setHasItem(hasItem === "true" ? true : false));
+      const hasItemLocal = localStorage.getItem(LocalStrageValue.has_item);
+      dispatch(setHasItem(hasItemLocal === "true" ? true : false));
     }
-  });
+
+    if (hasWateringCan === null) {
+      const hasWateringCanLocal = localStorage.getItem(
+        LocalStrageValue.has_watering_can
+      );
+      dispatch(
+        setHasWateringCan(hasWateringCanLocal === "true" ? true : false)
+      );
+      setItems((pre) => {
+        return [
+          ...pre,
+          { name: Items.wateringCan, path: ItemsPath.wateringCan },
+        ];
+      });
+    }
+  }, [
+    dispatch,
+    hasItem,
+    hasWateringCan,
+    isPuzzle1Done,
+    isPuzzle2Done,
+    isPuzzle3Done,
+    isStarted,
+    isTutorialDone,
+    setItems,
+  ]);
 
   useEffect(() => {
     if (isTutorialDone) return;
@@ -294,9 +340,50 @@ function Header() {
           </motion.div>
         </motion.div>
       )}
-      {isItemWindowOpen && (
-        <div className="w-[80%] h-20 absolute rounded-lg border-olivine border-2 mt-28 sm:mt-32 flex justify-evenly items-center bg-mindaro/20">
-          Items not ready yet
+      {isPuzzle1Done && isItemWindowOpen && (
+        <div className="w-[80%] h-20 fixed rounded-lg border-olivine border-2 mt-28 sm:mt-32 sm:ml-10 lg:ml-20 flex justify-evenly items-center bg-dim-gray/90">
+          {items.map((item) => {
+            return (
+              <motion.div
+                key={item.name}
+                drag
+                dragSnapToOrigin
+                dragMomentum={false}
+                onDragEnd={(e: MouseEvent) => {
+                  if (!cosmosPos) return;
+                  if (
+                    cosmosPos.pageY < e.pageY &&
+                    e.pageY < cosmosPos.pageY + cosmosPos.height &&
+                    cosmosPos.pageX < e.clientX &&
+                    e.clientX < cosmosPos.pageX + cosmosPos.width &&
+                    !isPuzzle3Done
+                  ) {
+                    playSoundCorrect();
+                    dispatch(setIsPuzzle3Done(true));
+                    setItems((pre) => {
+                      return pre.filter(
+                        (item) => item.name !== Items.wateringCan
+                      );
+                    });
+                    setIsItemWindowOpen(false);
+                    setTimeout(() => {
+                      dispatch(incrementFound(null));
+                    }, 500);
+                  }
+                }}
+                id={item.name}
+              >
+                <Image
+                  src={item.path}
+                  alt={item.name}
+                  width={100}
+                  height={100}
+                  className="select-none"
+                  draggable={false}
+                ></Image>
+              </motion.div>
+            );
+          })}
         </div>
       )}
     </div>

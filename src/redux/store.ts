@@ -7,6 +7,10 @@ export const store = configureStore({
     localStorage: localStrageReducer,
     puzzle: puzzleReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

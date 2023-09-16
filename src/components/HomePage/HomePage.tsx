@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   SiReact,
   SiNextdotjs,
@@ -34,6 +34,7 @@ import { setIsStarted } from "@/redux/reducers/localStrageSlice";
 import {
   setIsTutorialMet,
   setIsPuzzle1Met,
+  setCosmosPos,
 } from "@/redux/reducers/puzzleSlice";
 
 const techsClass = "h-20 w-20 text-dim-gray select-none";
@@ -129,7 +130,12 @@ const HomePage = () => {
   const isPuzzle1Done = useSelector(
     (state: RootState) => state.localStorage.isPuzzle1Done
   );
+  const isPuzzle3Done = useSelector(
+    (state: RootState) => state.localStorage.isPuzzle3Done
+  );
   const dispatch = useDispatch();
+
+  const cosmos = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     document.body.onscroll = () => {
@@ -145,10 +151,7 @@ const HomePage = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (
-      isStarted &&
-      scrollY >= bodyHeight - innerWidth
-    ) {
+    if (isStarted && scrollY >= bodyHeight - innerWidth) {
       dispatch(setIsTutorialMet(true));
     } else {
       dispatch(setIsTutorialMet(false));
@@ -180,6 +183,35 @@ const HomePage = () => {
     if (!isPuzzle1Done) return;
     setCurrentDeg([0, 0, 0, 0, 0, 0, 0, 0, 0]);
   }, [isPuzzle1Done]);
+
+  useEffect(() => {
+    if (!cosmos.current) return;
+    const cosmosEle = cosmos.current;
+    dispatch(
+      setCosmosPos({
+        pageY: cosmosEle.offsetTop,
+        pageX: cosmosEle.getBoundingClientRect().left,
+        height: cosmosEle.height,
+        width: cosmosEle.width,
+      })
+    );
+    window.onresize = () => {
+      if (!cosmos.current) return;
+      const cosmosEle = cosmos.current;
+      dispatch(
+        setCosmosPos({
+          pageY: cosmosEle.offsetTop,
+          pageX: cosmosEle.getBoundingClientRect().left,
+          height: cosmosEle.height,
+          width: cosmosEle.width,
+        })
+      );
+    };
+
+    return () => {
+      window.onresize = null;
+    };
+  }, [cosmos, dispatch]);
 
   return (
     <main>
@@ -250,6 +282,40 @@ const HomePage = () => {
               isStarted && "translate-x-[100px] sm:translate-x-[200px]"
             }`}
           />
+        )}
+        <AnimatePresence>
+          {isTutorialDone && !isPuzzle3Done && (
+            <motion.div exit={{ opacity: 0 }} transition={{ duration: 1 }}>
+              <Image
+                src={"/images/cosmos1.svg"}
+                width={100}
+                height={100}
+                alt="cosmos"
+                className={`absolute safariImg select-none right-[150px] bottom-[0%] sm:right-[300px] sm:bottom-[10%] scale-50 sm:scale-100 ${
+                  isStarted && "translate-x-[100px] sm:translate-x-[200px]"
+                }`}
+                ref={cosmos}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+        {isTutorialDone && isPuzzle3Done && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+          >
+            <Image
+              src={"/images/cosmos2.svg"}
+              width={100}
+              height={100}
+              alt="cosmos"
+              className={`absolute safariImg select-none right-[150px] bottom-[0%] sm:right-[300px] sm:bottom-[10%] scale-50 sm:scale-100 ${
+                isStarted && "translate-x-[100px] sm:translate-x-[200px]"
+              }`}
+              ref={cosmos}
+            />
+          </motion.div>
         )}
       </section>
       {isStarted && (
