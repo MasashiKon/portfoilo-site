@@ -6,6 +6,7 @@ const initialState: Puzzle = {
   isTutorialMet: false,
   isPuzzle1Met: false,
   isPuzzle2Met: false,
+  isPuzzle4Met: false,
   cosmosPos: null,
 };
 
@@ -22,6 +23,9 @@ export const puzzleSlice = createSlice({
     setIsPuzzle2Met: (state, action) => {
       state.isPuzzle2Met = action.payload;
     },
+    setIsPuzzle4Met: (state, action) => {
+      state.isPuzzle4Met = action.payload;
+    },
     setCosmosPos: (state, action: { payload: ItemPos; type: string }) => {
       state.cosmosPos = action.payload;
     },
@@ -35,6 +39,7 @@ export const {
   setIsTutorialMet,
   setIsPuzzle1Met,
   setIsPuzzle2Met,
+  setIsPuzzle4Met,
   setCosmosPos,
 } = puzzleSlice.actions;
 export default puzzleSlice.reducer;

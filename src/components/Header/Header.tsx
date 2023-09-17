@@ -17,6 +17,7 @@ import {
   setIsPuzzle1Done,
   setIsPuzzle2Done,
   setIsPuzzle3Done,
+  setIsPuzzle4Done,
   setHasItem,
   setHasWateringCan,
 } from "@/redux/reducers/localStrageSlice";
@@ -56,6 +57,9 @@ function Header() {
   const isPuzzle2Met = useSelector(
     (state: RootState) => state.puzzle.isPuzzle2Met
   );
+  const isPuzzle4Met = useSelector(
+    (state: RootState) => state.puzzle.isPuzzle4Met
+  );
   const cosmosPos = useSelector((state: RootState) => state.puzzle.cosmosPos);
   const isStarted = useSelector(
     (state: RootState) => state.localStorage.isStarted
@@ -71,6 +75,9 @@ function Header() {
   );
   const isPuzzle3Done = useSelector(
     (state: RootState) => state.localStorage.isPuzzle3Done
+  );
+  const isPuzzle4Done = useSelector(
+    (state: RootState) => state.localStorage.isPuzzle4Done
   );
   const hasItem = useSelector((state: RootState) => state.localStorage.hasItem);
   const hasWateringCan = useSelector(
@@ -105,6 +112,12 @@ function Header() {
     } else if (isPuzzle2Met && !isPuzzle2Done) {
       playSoundCorrect();
       dispatch(setIsPuzzle2Done(true));
+      setTimeout(() => {
+        dispatch(incrementFound(null));
+      }, 500);
+    } else if (isPuzzle4Met && !isPuzzle4Done) {
+      playSoundCorrect();
+      dispatch(setIsPuzzle4Done(true));
       setTimeout(() => {
         dispatch(incrementFound(null));
       }, 500);
@@ -154,6 +167,13 @@ function Header() {
         LocalStrageValue.is_puzzle3_done
       );
       dispatch(setIsPuzzle3Done(isPuzzle3DoneLocal === "true" ? true : false));
+    }
+
+    if (isPuzzle3Done === null) {
+      const isPuzzle4DoneLocal = localStorage.getItem(
+        LocalStrageValue.is_puzzle4_done
+      );
+      dispatch(setIsPuzzle4Done(isPuzzle4DoneLocal === "true" ? true : false));
     }
 
     if (hasItem === null) {
