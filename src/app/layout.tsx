@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 
 import ReduxProvider from "@/components/ReduxProvider/ReduxProvider";
 
@@ -22,6 +23,7 @@ export default function RootLayout({
         <div className="iOS_body">
           <ReduxProvider>{children}</ReduxProvider>
         </div>
+        <Analytics />
       </body>
     </html>
   );
