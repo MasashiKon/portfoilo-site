@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { LocalStrage, LocalStrageValue } from "@/types/localStrageValues";
 
 const initialState: LocalStrage = {
+  isMute: null,
   isStarted: null,
   isTutorialDone: null,
   isPuzzle1Done: null,
@@ -17,6 +18,16 @@ export const localStrageSlice = createSlice({
   name: "localStrage",
   initialState,
   reducers: {
+    toggleIsMute: (state, _) => {
+      localStorage.setItem(LocalStrageValue.is_mute, String(!state.isMute));
+      state.isMute = !state.isMute;
+    },
+    setIsMute: (state, action) => {
+      localStorage.setItem(LocalStrageValue.is_mute, action.payload);
+      console.log(action.payload);
+      
+      state.isMute = action.payload;
+    },
     setIsStarted: (state, action) => {
       localStorage.setItem(LocalStrageValue.is_started, action.payload);
       state.isStarted = action.payload;
@@ -78,6 +89,7 @@ export const localStrageSlice = createSlice({
     },
     removeAll: (state, _) => {
       localStorage.clear();
+      state.isMute = true;
       state.isStarted = null;
       state.isTutorialDone = null;
       state.isPuzzle1Done = null;
@@ -92,6 +104,8 @@ export const localStrageSlice = createSlice({
 });
 
 export const {
+  toggleIsMute,
+  setIsMute,
   setIsStarted,
   setIsTutorialDone,
   setIsPuzzle1Done,

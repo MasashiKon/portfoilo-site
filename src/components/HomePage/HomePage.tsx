@@ -283,22 +283,25 @@ const HomePage = () => {
             }`}
           />
         )}
-        <AnimatePresence>
-          {isTutorialDone && !isPuzzle3Done && (
-            <motion.div exit={{ opacity: 0 }} transition={{ duration: 1 }}>
-              <Image
-                src={"/images/cosmos1.svg"}
-                width={100}
-                height={100}
-                alt="cosmos"
-                className={`absolute safariImg select-none right-[150px] bottom-[0%] sm:right-[300px] sm:bottom-[10%] scale-50 sm:scale-100 ${
-                  isStarted && "translate-x-[100px] sm:translate-x-[200px]"
-                }`}
-                ref={cosmos}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {isTutorialDone && (
+          <AnimatePresence>
+            {!isPuzzle3Done && (
+              <motion.div exit={{ opacity: 0 }} transition={{ duration: 1 }}>
+                <Image
+                  src={"/images/cosmos1.svg"}
+                  width={100}
+                  height={100}
+                  alt="cosmos"
+                  className={`absolute safariImg select-none right-[150px] bottom-[0%] sm:right-[300px] sm:bottom-[10%] scale-50 sm:scale-100 ${
+                    isStarted && "translate-x-[100px] sm:translate-x-[200px]"
+                  }`}
+                  ref={cosmos}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        )}
+
         {isTutorialDone && isPuzzle3Done && (
           <motion.div
             initial={{ opacity: 0 }}

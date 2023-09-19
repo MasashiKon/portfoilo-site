@@ -2,12 +2,15 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import { BsExclamationCircle } from "react-icons/bs";
+import { VscMute, VscUnmute } from "react-icons/vsc";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
 import {
+  toggleIsMute,
+  setIsMute,
   removeItem,
   setIsStarted,
   setfoundTotalToRedux,
@@ -86,14 +89,21 @@ function Header() {
   const foundTotal = useSelector(
     (state: RootState) => state.localStorage.foundTotal
   );
+  const isMute = useSelector((state: RootState) => state.localStorage.isMute);
 
   const checkButton = useRef<HTMLButtonElement>(null);
+
+  const playSoundCorrectWithUnmute = () => {
+    if (!isMute) {
+      playSoundCorrect();
+    }
+  };
 
   const handleCheckButton = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     if (isTutorialMet && !isTutorialDone) {
-      playSoundCorrect();
+      playSoundCorrectWithUnmute();
       setTimeout(() => {
         dispatch(setIsTutorialDone(true));
         setTimeout(() => {
@@ -101,7 +111,7 @@ function Header() {
         }, 500);
       }, 200);
     } else if (isPuzzle1Met && !isPuzzle1Done) {
-      playSoundCorrect();
+      playSoundCorrectWithUnmute();
       dispatch(setIsPuzzle1Done(true));
       setTimeout(() => {
         dispatch(incrementFound(null));
@@ -110,18 +120,19 @@ function Header() {
         }, 1000);
       }, 500);
     } else if (isPuzzle2Met && !isPuzzle2Done) {
-      playSoundCorrect();
+      playSoundCorrectWithUnmute();
       dispatch(setIsPuzzle2Done(true));
       setTimeout(() => {
         dispatch(incrementFound(null));
       }, 500);
     } else if (isPuzzle4Met && !isPuzzle4Done) {
-      playSoundCorrect();
+      playSoundCorrectWithUnmute();
       dispatch(setIsPuzzle4Done(true));
       setTimeout(() => {
         dispatch(incrementFound(null));
       }, 500);
     } else {
+      if (isMute) return;
       playClickSound();
     }
   };
@@ -134,6 +145,11 @@ function Header() {
   }, [dispatch]);
 
   useEffect(() => {
+    if (isMute === null) {
+      const isMuteLocal = localStorage.getItem(LocalStrageValue.is_mute);
+      dispatch(setIsMute(isMuteLocal === "false" ? false : true));
+    }
+
     if (isStarted === null) {
       const isStartedLocal = localStorage.getItem(LocalStrageValue.is_started);
       dispatch(setIsStarted(isStartedLocal === "true" ? true : false));
@@ -204,6 +220,7 @@ function Header() {
     }
   }, [
     dispatch,
+    isMute,
     hasItem,
     hasWateringCan,
     isPuzzle1Done,
@@ -350,22 +367,37 @@ function Header() {
               ))}
           </motion.ul>
         )}
-        <button
-          className="flex justify-start items-center rounded-full bg-yellow-green w-20 h-20 md:bg-olivine md:hover:bg-yellow-green active:shadow-[inset_5px_5px_8px_8px_rgba(0,0,0,0.3)] transition-colors duration-300"
-          style={{
-            borderColor: `rgba(156, 118, 220, ${buttonBorderAlpha.value})`,
-            borderWidth: "5px",
-            borderStyle: "solid",
-          }}
-          onClick={handleCheckButton}
-          ref={checkButton}
-        >
-          <BsExclamationCircle className="w-20 h-20 active:scale-95" />
-        </button>
+        <div className="flex">
+          <div
+            className="m-2 cursor-pointer"
+            onClick={() => dispatch(toggleIsMute(null))}
+          >
+            {isMute === null ? (
+              <VscMute className="w-6 h-6" />
+            ) : isMute ? (
+              <VscMute className="w-6 h-6" />
+            ) : (
+              <VscUnmute className="w-6 h-6" />
+            )}
+          </div>
+
+          <button
+            className="flex justify-start items-center rounded-full bg-yellow-green w-20 h-20 md:bg-olivine md:hover:bg-yellow-green active:shadow-[inset_5px_5px_8px_8px_rgba(0,0,0,0.3)] transition-colors duration-300"
+            style={{
+              borderColor: `rgba(156, 118, 220, ${buttonBorderAlpha.value})`,
+              borderWidth: "5px",
+              borderStyle: "solid",
+            }}
+            onClick={handleCheckButton}
+            ref={checkButton}
+          >
+            <BsExclamationCircle className="w-20 h-20 active:scale-95" />
+          </button>
+        </div>
       </div>
       {isTutorialDone && (
         <motion.div
-          className="fixed mt-32 right-5 h-10 w-10 rounded-md border-olivine border-4 bg-white flex justify-center items-center overflow-hidden"
+          className="fixed mt-32 right-5 h-10 w-10 rounded-md border-olivine border-4 bg-white flex justify-center items-center overflow-hidden select-none"
           initial={{ x: 100 }}
           animate={{ x: 0 }}
         >
@@ -397,7 +429,7 @@ function Header() {
                     e.clientX < cosmosPos.pageX + cosmosPos.width &&
                     !isPuzzle3Done
                   ) {
-                    playSoundCorrect();
+                    playSoundCorrectWithUnmute();
                     dispatch(setIsPuzzle3Done(true));
                     setItems((pre) => {
                       return pre.filter(

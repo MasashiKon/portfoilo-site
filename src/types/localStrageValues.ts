@@ -8,9 +8,11 @@ export enum LocalStrageValue {
   has_item = "has_item",
   has_watering_can = "has_watering_can",
   found_total = "found_total",
+  is_mute = "is_mute",
 }
 
 export type LocalStrage = {
+  isMute: boolean | null;
   isStarted: boolean | null;
   isTutorialDone: boolean | null;
   isPuzzle1Done: boolean | null;

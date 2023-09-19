@@ -29,6 +29,9 @@ const ContactMePage = () => {
   const isTutorialDone = useSelector((state: RootState) => {
     return state.localStorage.isTutorialDone;
   });
+  const isMute = useSelector((state: RootState) => {
+    return state.localStorage.isMute;
+  });
   const [textareaRows, setTextareaRows] = useState(5);
   const [isValidForm, setIsValidForm] = useState(false);
 
@@ -68,7 +71,9 @@ const ContactMePage = () => {
           theme: "light",
         });
         if (!isPuzzle4Done) {
-          playSoundCorrect();
+          if (!isMute) {
+            playSoundCorrect();
+          }
           dispatch(setIsPuzzle4Done(true));
           setTimeout(() => {
             dispatch(incrementFound(null));
@@ -180,7 +185,9 @@ const ContactMePage = () => {
             !hasWateringCan && hasWateringCan !== null && "opacity-100"
           }`}
           onClick={() => {
-            playGetSound();
+            if (!isMute) {
+              playGetSound();
+            }
             dispatch(setHasWateringCan(true));
           }}
         >
