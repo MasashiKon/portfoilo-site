@@ -9,6 +9,12 @@ export enum LocalStrageValue {
   has_watering_can = "has_watering_can",
   found_total = "found_total",
   is_mute = "is_mute",
+  theme = "theme",
+}
+
+export enum Theme {
+  light = "light",
+  dark = "dark",
 }
 
 export type LocalStrage = {
@@ -22,4 +28,5 @@ export type LocalStrage = {
   hasItem: boolean | null;
   hasWateringCan: boolean | null;
   foundTotal: number;
+  theme: Theme | null;
 };

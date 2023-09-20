@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { LocalStrage, LocalStrageValue } from "@/types/localStrageValues";
+import {
+  LocalStrage,
+  LocalStrageValue,
+  Theme,
+} from "@/types/localStrageValues";
 
 const initialState: LocalStrage = {
   isMute: null,
@@ -12,6 +16,7 @@ const initialState: LocalStrage = {
   hasItem: null,
   hasWateringCan: null,
   foundTotal: 0,
+  theme: null,
 };
 
 export const localStrageSlice = createSlice({
@@ -24,9 +29,20 @@ export const localStrageSlice = createSlice({
     },
     setIsMute: (state, action) => {
       localStorage.setItem(LocalStrageValue.is_mute, action.payload);
-      console.log(action.payload);
-      
       state.isMute = action.payload;
+    },
+    toggleTheme: (state, _) => {
+      if (state.theme === Theme.light) {
+        localStorage.setItem(LocalStrageValue.theme, Theme.dark);
+        state.theme = Theme.dark;
+      } else {
+        localStorage.setItem(LocalStrageValue.theme, Theme.light);
+        state.theme = Theme.light;
+      }
+    },
+    setTheme: (state, action) => {
+      localStorage.setItem(LocalStrageValue.theme, action.payload);
+      state.theme = action.payload;
     },
     setIsStarted: (state, action) => {
       localStorage.setItem(LocalStrageValue.is_started, action.payload);
@@ -106,6 +122,8 @@ export const localStrageSlice = createSlice({
 export const {
   toggleIsMute,
   setIsMute,
+  setTheme,
+  toggleTheme,
   setIsStarted,
   setIsTutorialDone,
   setIsPuzzle1Done,

@@ -1,7 +1,7 @@
 "use client";
 
 import { useDispatch, useSelector } from "react-redux";
-import { BsExclamationCircle } from "react-icons/bs";
+import { BsExclamationCircle, BsSun, BsMoon } from "react-icons/bs";
 import { VscMute, VscUnmute } from "react-icons/vsc";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
@@ -11,6 +11,8 @@ import Image from "next/image";
 import {
   toggleIsMute,
   setIsMute,
+  toggleTheme,
+  setTheme,
   removeItem,
   setIsStarted,
   setfoundTotalToRedux,
@@ -24,7 +26,7 @@ import {
   setHasItem,
   setHasWateringCan,
 } from "@/redux/reducers/localStrageSlice";
-import { LocalStrageValue } from "@/types/localStrageValues";
+import { LocalStrageValue, Theme } from "@/types/localStrageValues";
 import { RootState } from "@/redux/store";
 import { playSoundCorrect, playClickSound } from "@/utils/playSound";
 import { Items, Item, ItemsPath } from "@/types/itemsEnum";
@@ -90,7 +92,12 @@ function Header() {
     (state: RootState) => state.localStorage.foundTotal
   );
   const isMute = useSelector((state: RootState) => state.localStorage.isMute);
-
+  const theme = useSelector((state: RootState) => {
+    if (state.localStorage.theme) {
+      return state.localStorage.theme;
+    }
+    return Theme.dark;
+  });
   const checkButton = useRef<HTMLButtonElement>(null);
 
   const playSoundCorrectWithUnmute = () => {
@@ -148,6 +155,11 @@ function Header() {
     if (isMute === null) {
       const isMuteLocal = localStorage.getItem(LocalStrageValue.is_mute);
       dispatch(setIsMute(isMuteLocal === "false" ? false : true));
+    }
+
+    if (theme === null) {
+      const themeLocal = localStorage.getItem(LocalStrageValue.theme);
+      dispatch(setTheme(themeLocal === Theme.light ? Theme.light : Theme.dark));
     }
 
     if (isStarted === null) {
@@ -221,6 +233,7 @@ function Header() {
   }, [
     dispatch,
     isMute,
+    theme,
     hasItem,
     hasWateringCan,
     isPuzzle1Done,
@@ -368,17 +381,29 @@ function Header() {
           </motion.ul>
         )}
         <div className="flex">
-          <div
-            className="m-2 cursor-pointer"
-            onClick={() => dispatch(toggleIsMute(null))}
-          >
-            {isMute === null ? (
-              <VscMute className="w-6 h-6" />
-            ) : isMute ? (
-              <VscMute className="w-6 h-6" />
-            ) : (
-              <VscUnmute className="w-6 h-6" />
-            )}
+          <div className="flex flex-col justify-evenly">
+            <div
+              className="mr-2 cursor-pointer"
+              onClick={() => dispatch(toggleIsMute(null))}
+            >
+              {isMute === null ? (
+                <VscMute className="w-6 h-6" />
+              ) : isMute ? (
+                <VscMute className="w-6 h-6" />
+              ) : (
+                <VscUnmute className="w-6 h-6" />
+              )}
+            </div>
+            <div
+              className="mr-2 cursor-pointer"
+              onClick={() => dispatch(toggleTheme(null))}
+            >
+              {theme === Theme.light ? (
+                <BsSun className="w-6 h-6" />
+              ) : (
+                <BsMoon className="w-6 h-6" />
+              )}
+            </div>
           </div>
 
           <button
