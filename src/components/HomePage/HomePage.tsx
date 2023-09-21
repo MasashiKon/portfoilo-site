@@ -28,7 +28,7 @@ import {
   SiExpress,
 } from "react-icons/si";
 
-import { LocalStrageValue } from "@/types/localStrageValues";
+import { LocalStrageValue, Theme } from "@/types/localStrageValues";
 import { RootState } from "@/redux/store";
 import { setIsStarted } from "@/redux/reducers/localStrageSlice";
 import {
@@ -37,7 +37,7 @@ import {
   setCosmosPos,
 } from "@/redux/reducers/puzzleSlice";
 
-const techsClass = "h-20 w-20 text-dim-gray select-none";
+const techsClass = "h-20 w-20 select-none";
 
 const techStack = [
   <SiReact
@@ -89,7 +89,7 @@ const HomePage = () => {
   const [bodyHeight, setBodyHeight] = useState(0);
   const [bodyWidth, setBodyWidth] = useState(0);
   const [scrollY, setScrollY] = useState(0);
-  const [innerWidth, setInnerWidth] = useState(0);
+  const [innerHeight, setInnerHeight] = useState(0);
   const [nineTechs, setNineTechs] = useState(pickupNineTechs());
   const [currentDeg, setCurrentDeg] = useState([
     genRandomDeg(),
@@ -115,6 +115,7 @@ const HomePage = () => {
     false,
   ]);
 
+  const theme = useSelector((state: RootState) => state.localStorage.theme);
   const isStarted = useSelector(
     (state: RootState) => state.localStorage.isStarted
   );
@@ -143,7 +144,7 @@ const HomePage = () => {
       setBodyWidth(document.body.scrollWidth);
       setScrollY(window.scrollY);
     };
-    setInnerWidth(window.innerHeight);
+    setInnerHeight(window.innerHeight);
 
     return () => {
       document.body.onscroll = null;
@@ -151,20 +152,12 @@ const HomePage = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (isStarted && scrollY >= bodyHeight - innerWidth) {
+    if (isStarted && scrollY === bodyHeight - innerHeight) {
       dispatch(setIsTutorialMet(true));
     } else {
       dispatch(setIsTutorialMet(false));
     }
-  }, [
-    scrollY,
-    bodyHeight,
-    bodyWidth,
-    innerWidth,
-    isTutorialMet,
-    isStarted,
-    dispatch,
-  ]);
+  }, [scrollY, bodyHeight, innerHeight, isStarted, dispatch]);
 
   useEffect(() => {
     setTechsCorrect(() => {
@@ -214,11 +207,17 @@ const HomePage = () => {
   }, [cosmos, dispatch]);
 
   return (
-    <main>
+    <main
+      className={`transition-colors duration-200 ${
+        theme === Theme.light
+          ? "text-dim-gray"
+          : "text-english-violet bg-dim-gray"
+      }`}
+    >
       <section className="flex justify-center items-center h-screen w-screen relative">
         {isStarted !== null && !isStarted && (
           <div
-            className={`cursor-pointer hover:text-xl active:text-sm select-none transition-{font-size} transition-{line-height} duration-200`}
+            className={`cursor-pointer font-bold hover:text-xl active:text-sm select-none transition-{font-size} transition-{line-height} duration-200`}
             onClick={() => {
               dispatch(setIsStarted(true));
               localStorage.setItem(LocalStrageValue.is_started, "true");
@@ -329,7 +328,7 @@ const HomePage = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8 }}
-                className="w-screen flex justify-center items-center text-dim-gray font-bold"
+                className="w-screen flex justify-center items-center font-bold"
               >
                 My TechStack
               </motion.div>

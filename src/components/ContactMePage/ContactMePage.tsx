@@ -17,9 +17,13 @@ import {
   setIsPuzzle4Done,
   incrementFound,
 } from "@/redux/reducers/localStrageSlice";
+import { Theme } from "@/types/localStrageValues";
 
 const ContactMePage = () => {
   const router = useRouter();
+  const theme = useSelector((state: RootState) => {
+    return state.localStorage.theme;
+  });
   const hasWateringCan = useSelector((state: RootState) => {
     return state.localStorage.hasWateringCan;
   });
@@ -119,7 +123,13 @@ const ContactMePage = () => {
   };
 
   return (
-    <>
+    <main
+      className={`transition-colors duration-200 ${
+        theme === Theme.light
+          ? "text-dim-gray"
+          : "text-english-violet bg-dim-gray"
+      }`}
+    >
       <div className="pt-28 h-screen w-screen grid place-content-center">
         <ToastContainer />
         <form
@@ -132,7 +142,11 @@ const ContactMePage = () => {
             <input
               type="text"
               name="user_name"
-              className="border-4 rounded-md border-dim-gray mt-2 w-60 transition-colors duration-200 valid:border-yellow-green focus:outline-olivine"
+              className={`border-4 rounded-md mt-2 w-60 transition-colors duration-200 valid:border-yellow-green focus:outline-olivine ${
+                theme === Theme.light
+                  ? "border-dim-gray"
+                  : "border-english-violet"
+              }`}
               ref={nameInput}
               required
               onChange={handleFormValidity}
@@ -143,7 +157,11 @@ const ContactMePage = () => {
             <input
               type="email"
               name="user_email"
-              className="border-4 rounded-md border-dim-gray mt-2 w-60 transition-colors duration-200 valid:border-yellow-green focus:outline-olivine"
+              className={`border-4 rounded-md mt-2 w-60 transition-colors duration-200 valid:border-yellow-green focus:outline-olivine ${
+                theme === Theme.light
+                  ? "border-dim-gray"
+                  : "border-english-violet"
+              }`}
               ref={emailInput}
               required
               onChange={handleFormValidity}
@@ -161,7 +179,11 @@ const ContactMePage = () => {
           </label>
           <textarea
             name="message"
-            className="border-4 rounded-md border-dim-gray mt-2 w-60 resize-none transition-colors duration-200 valid:border-yellow-green focus:outline-olivine"
+            className={`border-4 rounded-md mt-2 w-60 resize-none transition-colors duration-200 valid:border-yellow-green focus:outline-olivine ${
+              theme === Theme.light
+                ? "border-dim-gray"
+                : "border-english-violet"
+            }`}
             rows={textareaRows}
             ref={messageInput}
             id="textarea"
@@ -171,8 +193,12 @@ const ContactMePage = () => {
           <motion.input
             type="submit"
             value="Send"
-            className={`border-4 rounded-md border-dim-gray w-1/2 mt-2 cursor-pointer transition-colors duration-200 ${
+            className={`border-4 rounded-md w-1/2 mt-2 cursor-pointer transition-colors duration-200 ${
               isValidForm && "border-yellow-green"
+            } ${
+              theme === Theme.light
+                ? "border-dim-gray"
+                : "border-english-violet"
             }`}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
@@ -199,7 +225,7 @@ const ContactMePage = () => {
           ></Image>
         </div>
       )}
-    </>
+    </main>
   );
 };
 

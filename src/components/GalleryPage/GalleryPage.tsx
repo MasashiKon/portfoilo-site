@@ -9,9 +9,11 @@ import { useRouter } from "next/navigation";
 
 import { setIsPuzzle2Met } from "@/redux/reducers/puzzleSlice";
 import { RootState } from "@/redux/store";
+import { Theme } from "@/types/localStrageValues";
 
 const GalleryPage = () => {
   const router = useRouter();
+  const theme = useSelector((state: RootState) => state.localStorage.theme);
   const isTutorialDone = useSelector(
     (state: RootState) => state.localStorage.isTutorialDone
   );
@@ -98,7 +100,13 @@ const GalleryPage = () => {
   }
 
   return (
-    <div className="pt-28 h-screen w-screen">
+    <div
+      className={`pt-28 h-screen w-screen transition-colors duration-200 ${
+        theme === Theme.light
+          ? "text-dim-gray"
+          : "text-english-violet bg-dim-gray"
+      }`}
+    >
       <section className="grid grid-cols-2 grid-rows-2 h-full w-full place-content-around">
         <div className="flex justify-center items-center z-10">
           <Link
@@ -179,7 +187,7 @@ const GalleryPage = () => {
             <motion.div
               initial={{ y: "-40px" }}
               animate={{ y: "25px" }}
-              exit={{ y: "-40px"}}
+              exit={{ y: "-40px" }}
               className={`absolute left-[70%] top-[38%] sm:top-[40%] md:top-[38%] lg:top-[44%]`}
             >
               <Image

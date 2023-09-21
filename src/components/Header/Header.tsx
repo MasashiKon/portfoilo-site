@@ -92,12 +92,7 @@ function Header() {
     (state: RootState) => state.localStorage.foundTotal
   );
   const isMute = useSelector((state: RootState) => state.localStorage.isMute);
-  const theme = useSelector((state: RootState) => {
-    if (state.localStorage.theme) {
-      return state.localStorage.theme;
-    }
-    return Theme.dark;
-  });
+  const theme = useSelector((state: RootState) => state.localStorage.theme);
   const checkButton = useRef<HTMLButtonElement>(null);
 
   const playSoundCorrectWithUnmute = () => {
