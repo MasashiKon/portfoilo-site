@@ -1,8 +1,14 @@
 "use client";
 
 import { useDispatch, useSelector } from "react-redux";
-import { BsExclamationCircle, BsSun, BsMoon } from "react-icons/bs";
-import { VscMute, VscUnmute } from "react-icons/vsc";
+import {
+  BsExclamationCircle,
+  BsSun,
+  BsMoon,
+  BsThreeDots,
+} from "react-icons/bs";
+import { VscMute, VscUnmute, VscThreeBars } from "react-icons/vsc";
+import { IoReorderThreeOutline } from "react-icons/io5";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -30,6 +36,7 @@ import { LocalStrageValue, Theme } from "@/types/localStrageValues";
 import { RootState } from "@/redux/store";
 import { playSoundCorrect, playClickSound } from "@/utils/playSound";
 import { Items, Item, ItemsPath } from "@/types/itemsEnum";
+import Menu from "../Menu/Menu";
 
 enum buttonBorderStatus {
   inc = "inc",
@@ -51,6 +58,7 @@ function Header() {
   const [intervalCount, setIntervalCount] = useState(0);
   const [isItemWindowOpen, setIsItemWindowOpen] = useState(false);
   const [items, setItems] = useState<Item[]>([]);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const dispatch = useDispatch();
   const isTutorialMet = useSelector(
@@ -307,12 +315,24 @@ function Header() {
   }, [isTutorialMet, isTutorialDone, intervalCount, buttonBorderAlpha.status]);
 
   return (
-    <div className="relative z-20">
+    <div className="z-20 fixed sm:relative">
       <div
-        className={`fixed h-28 w-screen flex justify-between items-center p-5 transition-[border-color,background-color] duration-700 ${
+        className={`h-28 w-screen flex justify-between items-center p-5 relative -top-28 transition-transform transition-color duration-700 sm:hidden ${
+          isTutorialDone && "bg-dim-gray/90 text-lime-50"
+        } ${isMenuOpen && "top-0"}`}
+      >
+        <Menu
+          isItemWindowOpen={isItemWindowOpen}
+          isPuzzle1Done={isPuzzle1Done}
+          hasItem={hasItem}
+          setIsItemWindowOpen={setIsItemWindowOpen}
+        />
+      </div>
+      <div
+        className={`relative -top-28 sm:top-0 sm:fixed h-28 w-screen flex justify-between items-center p-5 transition-transform transition-color duration-700 ${
           isTutorialDone &&
           "border-english-violet border-b-4 border-dashed bg-dim-gray/90 text-lime-50"
-        }`}
+        } ${isMenuOpen && "top-0"}`}
       >
         <div>
           <Link href={"/"} className="block font-bold text-lg">
@@ -328,52 +348,25 @@ function Header() {
           )}
         </div>
         {isTutorialDone && (
-          <motion.ul
-            initial={{ y: "-100px" }}
-            animate={{ y: "0px" }}
-            className="w-1/2 flex justify-evenly items-center"
-          >
-            <motion.li layout>
-              <Link
-                href={"/gallery"}
-                className="text-center grid place-content-center"
-              >
-                Gallery
-              </Link>
-            </motion.li>
-            <motion.li layout>
-              <Link
-                href={"/contact-me"}
-                className="text-center grid place-content-center"
-              >
-                Contact me
-              </Link>
-            </motion.li>
-            {isPuzzle1Done &&
-              (!hasItem ? (
-                <motion.li
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3, delay: 0.5 }}
-                >
-                  <div
-                    onClick={() => setIsItemWindowOpen(!isItemWindowOpen)}
-                    className="select-none cursor-pointer text-center grid place-content-center"
-                  >
-                    Item
-                  </div>
-                </motion.li>
-              ) : (
-                <motion.li layout>
-                  <div
-                    onClick={() => setIsItemWindowOpen(!isItemWindowOpen)}
-                    className="select-none cursor-pointer text-center grid place-content-center"
-                  >
-                    Item
-                  </div>
-                </motion.li>
-              ))}
-          </motion.ul>
+          <>
+            <div
+              className="h-10 w-10 sm:hidden cursor-pointer flex justify-center items-center"
+              onClick={() => {
+                setIsMenuOpen(!isMenuOpen);
+              }}
+            >
+              Menu
+            </div>
+
+            <div className="hidden sm:block w-1/2 ">
+              <Menu
+                isItemWindowOpen={isItemWindowOpen}
+                isPuzzle1Done={isPuzzle1Done}
+                hasItem={hasItem}
+                setIsItemWindowOpen={setIsItemWindowOpen}
+              />
+            </div>
+          </>
         )}
         <div className="flex">
           <div className="flex flex-col justify-evenly">

@@ -231,9 +231,10 @@ const HomePage = () => {
           width={200}
           height={200}
           alt="tete"
-          className={`absolute safariImg select-none left-[10%] -top-[200px] hover:scale-[120%] active:scale-50 transition-{scale} duration-200 transition-{x} duration-200 ${
+          className={`absolute safariImg select-none left-[10%] -top-[200px] transition-{scale} duration-200 transition-{x} duration-200 ${
             isStarted && "translate-y-[250px]"
           }`}
+          draggable={false}
         />
         <Image
           src={"/images/tree1.svg"}
@@ -243,6 +244,7 @@ const HomePage = () => {
           className={`absolute safariImg select-none -left-[200px] bottom-[5%] ${
             isStarted && "translate-x-[100px]"
           }`}
+          draggable={false}
         />
         <Image
           src={"/images/tree1.svg"}
@@ -252,6 +254,7 @@ const HomePage = () => {
           className={`absolute safariImg select-none -left-[200px] bottom-[10%] ${
             isStarted && "translate-x-[150px]"
           }`}
+          draggable={false}
         />
         <Image
           src={"/images/tree1.svg"}
@@ -261,6 +264,7 @@ const HomePage = () => {
           className={`absolute safariImg select-none left-full bottom-[5%] ${
             isStarted && "-translate-x-[100px]"
           }`}
+          draggable={false}
         />
         <Image
           src={"/images/tree1.svg"}
@@ -270,6 +274,7 @@ const HomePage = () => {
           className={`absolute safariImg select-none left-full bottom-[10%] ${
             isStarted && "-translate-x-[150px]"
           }`}
+          draggable={false}
         />
         {!isTutorialDone && (
           <Image
@@ -280,6 +285,7 @@ const HomePage = () => {
             className={`fixed safariImg select-none -left-[100px] bottom-[0%] sm:bottom-[10%] scale-50 sm:scale-100 ${
               isStarted && "translate-x-[100px] sm:translate-x-[200px]"
             }`}
+            draggable={false}
           />
         )}
         {isTutorialDone && (
@@ -295,6 +301,7 @@ const HomePage = () => {
                     isStarted && "translate-x-[100px] sm:translate-x-[200px]"
                   }`}
                   ref={cosmos}
+                  draggable={false}
                 />
               </motion.div>
             )}
@@ -316,6 +323,7 @@ const HomePage = () => {
                 isStarted && "translate-x-[100px] sm:translate-x-[200px]"
               }`}
               ref={cosmos}
+              draggable={false}
             />
           </motion.div>
         )}
@@ -381,6 +389,7 @@ const HomePage = () => {
             className={`absolute safariImg select-none bottom-[0%] sm:left-[100px] sm:bottom-[10%] scale-50 sm:scale-100 ${
               !isTutorialDone && "opacity-40"
             }`}
+            draggable={false}
           />
         </section>
       )}
