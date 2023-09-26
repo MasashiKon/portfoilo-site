@@ -36,6 +36,7 @@ import {
   setIsPuzzle1Met,
   setCosmosPos,
 } from "@/redux/reducers/puzzleSlice";
+import { log } from "console";
 
 const techsClass = "h-20 w-20 select-none";
 
@@ -137,7 +138,7 @@ const HomePage = () => {
   const dispatch = useDispatch();
 
   const cosmos = useRef<HTMLImageElement>(null);
-
+  
   useEffect(() => {
     document.body.onscroll = () => {
       setBodyHeight(document.body.scrollHeight);
@@ -152,7 +153,7 @@ const HomePage = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (isStarted && scrollY === bodyHeight - innerHeight) {
+    if (isStarted && scrollY >= bodyHeight - innerHeight - 5) {
       dispatch(setIsTutorialMet(true));
     } else {
       dispatch(setIsTutorialMet(false));
@@ -227,6 +228,7 @@ const HomePage = () => {
           </div>
         )}
         <Image
+          id="cloud"
           src={"/images/cloud1.svg"}
           width={200}
           height={200}

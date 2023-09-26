@@ -7,6 +7,7 @@ const initialState: Puzzle = {
   isPuzzle1Met: false,
   isPuzzle2Met: false,
   isPuzzle4Met: false,
+  isPuzzle5Met: false,
   cosmosPos: null,
 };
 
@@ -26,6 +27,9 @@ export const puzzleSlice = createSlice({
     setIsPuzzle4Met: (state, action) => {
       state.isPuzzle4Met = action.payload;
     },
+    setIsPuzzle5Met: (state, action) => {
+      state.isPuzzle5Met = action.payload;
+    },
     setCosmosPos: (state, action: { payload: ItemPos; type: string }) => {
       state.cosmosPos = action.payload;
     },
@@ -40,6 +44,7 @@ export const {
   setIsPuzzle1Met,
   setIsPuzzle2Met,
   setIsPuzzle4Met,
+  setIsPuzzle5Met,
   setCosmosPos,
 } = puzzleSlice.actions;
 export default puzzleSlice.reducer;

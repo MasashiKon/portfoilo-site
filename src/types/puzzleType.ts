@@ -10,5 +10,6 @@ export type Puzzle = {
   isPuzzle1Met: boolean;
   isPuzzle2Met: boolean;
   isPuzzle4Met: boolean;
+  isPuzzle5Met: boolean;
   cosmosPos: ItemPos | null;
 };

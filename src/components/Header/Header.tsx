@@ -29,6 +29,7 @@ import {
   setIsPuzzle2Done,
   setIsPuzzle3Done,
   setIsPuzzle4Done,
+  setIsPuzzle5Done,
   setHasItem,
   setHasWateringCan,
 } from "@/redux/reducers/localStrageSlice";
@@ -73,6 +74,9 @@ function Header() {
   const isPuzzle4Met = useSelector(
     (state: RootState) => state.puzzle.isPuzzle4Met
   );
+  const isPuzzle5Met = useSelector(
+    (state: RootState) => state.puzzle.isPuzzle5Met
+  );
   const cosmosPos = useSelector((state: RootState) => state.puzzle.cosmosPos);
   const isStarted = useSelector(
     (state: RootState) => state.localStorage.isStarted
@@ -91,6 +95,9 @@ function Header() {
   );
   const isPuzzle4Done = useSelector(
     (state: RootState) => state.localStorage.isPuzzle4Done
+  );
+  const isPuzzle5Done = useSelector(
+    (state: RootState) => state.localStorage.isPuzzle5Done
   );
   const hasItem = useSelector((state: RootState) => state.localStorage.hasItem);
   const hasWateringCan = useSelector(
@@ -138,6 +145,13 @@ function Header() {
     } else if (isPuzzle4Met && !isPuzzle4Done) {
       playSoundCorrectWithUnmute();
       dispatch(setIsPuzzle4Done(true));
+      setTimeout(() => {
+        dispatch(incrementFound(null));
+      }, 500);
+    } else if (isPuzzle5Met && !isPuzzle5Done) {
+      
+      playSoundCorrectWithUnmute();
+      dispatch(setIsPuzzle5Done(true));
       setTimeout(() => {
         dispatch(incrementFound(null));
       }, 500);
@@ -200,11 +214,18 @@ function Header() {
       dispatch(setIsPuzzle3Done(isPuzzle3DoneLocal === "true" ? true : false));
     }
 
-    if (isPuzzle3Done === null) {
+    if (isPuzzle4Done === null) {
       const isPuzzle4DoneLocal = localStorage.getItem(
         LocalStrageValue.is_puzzle4_done
       );
       dispatch(setIsPuzzle4Done(isPuzzle4DoneLocal === "true" ? true : false));
+    }
+
+    if (isPuzzle5Done === null) {
+      const isPuzzle5DoneLocal = localStorage.getItem(
+        LocalStrageValue.is_puzzle5_done
+      );
+      dispatch(setIsPuzzle5Done(isPuzzle5DoneLocal === "true" ? true : false));
     }
 
     if (hasItem === null) {
@@ -242,6 +263,8 @@ function Header() {
     isPuzzle1Done,
     isPuzzle2Done,
     isPuzzle3Done,
+    isPuzzle4Done,
+    isPuzzle5Done,
     isStarted,
     isTutorialDone,
     setItems,
@@ -266,7 +289,7 @@ function Header() {
         isTutorialMet &&
         !isTutorialDone &&
         checkButton.current &&
-        intervalCount >= 100
+        intervalCount >= 20
       ) {
         setButtonBorderAlpha((preButtonBorderAlpha) => {
           const value = preButtonBorderAlpha.value;

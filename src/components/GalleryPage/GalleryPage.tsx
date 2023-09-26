@@ -2,14 +2,17 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 
-import { setIsPuzzle2Met } from "@/redux/reducers/puzzleSlice";
+import { setIsPuzzle2Met, setIsPuzzle5Met } from "@/redux/reducers/puzzleSlice";
 import { RootState } from "@/redux/store";
 import { Theme } from "@/types/localStrageValues";
+
+const puzzle5Threshhold = 250;
+const puzzle5EffectWidth = 15;
 
 const GalleryPage = () => {
   const router = useRouter();
@@ -20,6 +23,12 @@ const GalleryPage = () => {
   const isPuzzle2Done = useSelector(
     (state: RootState) => state.localStorage.isPuzzle2Done
   );
+  const isPuzzle5Done = useSelector(
+    (state: RootState) => state.localStorage.isPuzzle5Done
+  );
+  const isPuzzle5Met = useSelector(
+    (state: RootState) => state.puzzle.isPuzzle5Met
+  );
 
   const [isRizard1Shown, setIsRizard1Shown] = useState(false);
   const [isRizard2Shown, setIsRizard2Shown] = useState(false);
@@ -28,11 +37,59 @@ const GalleryPage = () => {
 
   const dispatch = useDispatch();
 
+  const rock = useRef<HTMLImageElement>(null);
+  const weed = useRef<HTMLImageElement>(null);
+  const curPosX = useRef(0);
+  const prePosX = useRef(100);
+
   useEffect(() => {
     if (!isTutorialDone) {
       router.push("/");
     }
   });
+
+  useEffect(() => {
+    if (!rock.current || !weed.current) return;
+    if (curPosX.current >= puzzle5Threshhold) return;
+    const weedEle = weed.current;
+    let mouseOriginX = 0;
+    const mouseMove = (documentEv: MouseEvent) => {
+      if (isPuzzle5Met) return;
+      if (curPosX.current >= puzzle5Threshhold) return;
+
+      const movement = documentEv.clientX - mouseOriginX;
+      weedEle.style.left = movement + prePosX.current + "px";
+      curPosX.current = movement + prePosX.current;
+
+      if (curPosX.current >= puzzle5Threshhold) {
+        weedEle.style.left = curPosX.current + puzzle5EffectWidth + "px";
+        curPosX.current = curPosX.current + puzzle5EffectWidth;
+
+        dispatch(setIsPuzzle5Met(true));
+      }
+    };
+    const mousedown = (divEv: MouseEvent) => {
+      if (curPosX.current >= puzzle5Threshhold) return;
+      mouseOriginX = divEv.clientX;
+      document.addEventListener("mousemove", mouseMove);
+      weedEle.addEventListener("mouseleave", mouseup);
+    };
+    const mouseup = (mouse: MouseEvent) => {
+      prePosX.current = curPosX.current;
+      mouseOriginX = 0;
+      document.removeEventListener("mousemove", mouseMove);
+      weedEle.removeEventListener("mouseleave", mouseup);
+    };
+    weedEle.addEventListener("mousedown", mousedown);
+    weedEle.addEventListener("mouseup", mouseup);
+
+    return () => {
+      weedEle.removeEventListener("mousedown", mousedown);
+      weedEle.removeEventListener("mousedown", mouseup);
+      weedEle.removeEventListener("mouseleave", mouseup);
+      document.removeEventListener("mousemove", mouseMove);
+    };
+  }, [dispatch, isPuzzle5Met]);
 
   useEffect(() => {
     if (isPuzzle2Done) return;
@@ -100,14 +157,14 @@ const GalleryPage = () => {
   }
 
   return (
-    <div
-      className={`pt-28 h-screen w-screen transition-colors duration-200 ${
+    <main
+      className={`transition-colors duration-200 relative ${
         theme === Theme.light
           ? "text-dim-gray"
           : "text-english-violet bg-dim-gray"
       }`}
     >
-      <section className="grid grid-cols-2 grid-rows-2 h-full w-full place-content-around">
+      <section className="grid grid-cols-2 grid-rows-2 h-screen w-screen pt-28 place-content-around relative">
         <div className="flex justify-center items-center z-10">
           <Link
             href={"https://concentration-cards.vercel.app/"}
@@ -237,7 +294,43 @@ const GalleryPage = () => {
           )}
         </AnimatePresence>
       </section>
-    </div>
+      <section className="h-screen w-screen pt-28 relative">
+        <Image
+          src={"/images/squirrel.svg"}
+          width={80}
+          height={80}
+          alt="weed"
+          className={`select-none absolute top-[75%] ${"fill-dim-gray"}`}
+          ref={weed}
+          style={{ left: 220 + "px" }}
+          draggable={false}
+        ></Image>
+        <Image
+          src={"/images/rock1.svg"}
+          width={150}
+          height={150}
+          alt="rock"
+          className={`select-none absolute top-[70%] ${"fill-dim-gray"}`}
+          ref={rock}
+          style={{ left: 100 + "px" }}
+          draggable={false}
+        ></Image>
+        <Image
+          src={"/images/weed.svg"}
+          width={250}
+          height={250}
+          alt="weed"
+          className={`select-none absolute top-[64%] ${"fill-dim-gray"}`}
+          ref={weed}
+          style={{
+            left: isPuzzle5Done
+              ? puzzle5Threshhold + puzzle5EffectWidth + "px"
+              : prePosX.current + "px",
+          }}
+          draggable={false}
+        ></Image>
+      </section>
+    </main>
   );
 };
 
