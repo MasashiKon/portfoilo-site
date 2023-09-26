@@ -433,7 +433,7 @@ function Header() {
       </div>
       {isTutorialDone && (
         <motion.div
-          className="fixed mt-32 right-5 h-10 w-10 rounded-md border-olivine border-4 bg-white flex justify-center items-center overflow-hidden select-none"
+          className="fixed top-32 sm:top-0 sm:mt-32 right-5 h-10 w-10 rounded-md border-olivine border-4 bg-white flex justify-center items-center overflow-hidden select-none"
           initial={{ x: 100 }}
           animate={{ x: 0 }}
         >
