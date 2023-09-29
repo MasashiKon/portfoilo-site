@@ -6,8 +6,10 @@ export enum LocalStrageValue {
   is_puzzle3_done = "is_puzzle3_done",
   is_puzzle4_done = "is_puzzle4_done",
   is_puzzle5_done = "is_puzzle5_done",
+  is_puzzle6_done = "is_puzzle6_done",
   has_item = "has_item",
   has_watering_can = "has_watering_can",
+  has_greeting = "has_greeting",
   found_total = "found_total",
   is_mute = "is_mute",
   theme = "theme",
@@ -27,8 +29,10 @@ export type LocalStrage = {
   isPuzzle3Done: boolean | null;
   isPuzzle4Done: boolean | null;
   isPuzzle5Done: boolean | null;
+  isPuzzle6Done: boolean | null;
   hasItem: boolean | null;
   hasWateringCan: boolean | null;
+  hasGreeting: boolean | null;
   foundTotal: number;
   theme: Theme | null;
 };

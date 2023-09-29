@@ -30,8 +30,10 @@ import {
   setIsPuzzle3Done,
   setIsPuzzle4Done,
   setIsPuzzle5Done,
+  setIsPuzzle6Done,
   setHasItem,
   setHasWateringCan,
+  setHasGreeting,
 } from "@/redux/reducers/localStrageSlice";
 import { LocalStrageValue, Theme } from "@/types/localStrageValues";
 import { RootState } from "@/redux/store";
@@ -99,9 +101,15 @@ function Header() {
   const isPuzzle5Done = useSelector(
     (state: RootState) => state.localStorage.isPuzzle5Done
   );
+  const isPuzzle6Done = useSelector(
+    (state: RootState) => state.localStorage.isPuzzle6Done
+  );
   const hasItem = useSelector((state: RootState) => state.localStorage.hasItem);
   const hasWateringCan = useSelector(
     (state: RootState) => state.localStorage.hasWateringCan
+  );
+  const hasGreeting = useSelector(
+    (state: RootState) => state.localStorage.hasGreeting
   );
   const foundTotal = useSelector(
     (state: RootState) => state.localStorage.foundTotal
@@ -149,7 +157,6 @@ function Header() {
         dispatch(incrementFound(null));
       }, 500);
     } else if (isPuzzle5Met && !isPuzzle5Done) {
-      
       playSoundCorrectWithUnmute();
       dispatch(setIsPuzzle5Done(true));
       setTimeout(() => {
@@ -228,6 +235,13 @@ function Header() {
       dispatch(setIsPuzzle5Done(isPuzzle5DoneLocal === "true" ? true : false));
     }
 
+    if (isPuzzle6Done === null) {
+      const isPuzzle6DoneLocal = localStorage.getItem(
+        LocalStrageValue.is_puzzle6_done
+      );
+      dispatch(setIsPuzzle6Done(isPuzzle6DoneLocal === "true" ? true : false));
+    }
+
     if (hasItem === null) {
       const hasItemLocal = localStorage.getItem(LocalStrageValue.has_item);
       dispatch(setHasItem(hasItemLocal === "true" ? true : false));
@@ -254,33 +268,54 @@ function Header() {
         });
       }
     }
+
+    if (hasGreeting === null) {
+      const hasGreetingLocal = localStorage.getItem(
+        LocalStrageValue.has_greeting
+      );
+      dispatch(setHasGreeting(hasGreetingLocal === "true" ? true : false));
+      if (hasGreetingLocal === "true") {
+        setItems((pre) => {
+          const newArr = pre.filter((item) => item.name !== Items.greeting);
+          return [
+            ...newArr,
+            { name: Items.greeting, path: ItemsPath.greeting },
+          ];
+        });
+      } else {
+        setItems((pre) => {
+          return pre.filter((item) => item.name !== Items.greeting);
+        });
+      }
+    }
   }, [
     dispatch,
     isMute,
     theme,
     hasItem,
     hasWateringCan,
+    hasGreeting,
     isPuzzle1Done,
     isPuzzle2Done,
     isPuzzle3Done,
     isPuzzle4Done,
     isPuzzle5Done,
+    isPuzzle6Done,
     isStarted,
     isTutorialDone,
     setItems,
   ]);
 
   useEffect(() => {
-    if (hasWateringCan) {
-      setItems((pre) => {
-        const newArr = pre.filter((item) => item.name !== Items.wateringCan);
-        return [
-          ...newArr,
-          { name: Items.wateringCan, path: ItemsPath.wateringCan },
-        ];
-      });
-    }
-  }, [hasWateringCan]);
+    setItems((pre) => {
+      const newArr = [];
+      if (hasWateringCan)
+        newArr.push({ name: Items.wateringCan, path: ItemsPath.wateringCan });
+      if (hasGreeting)
+        newArr.push({ name: Items.greeting, path: ItemsPath.greeting });
+      return newArr;
+    });
+  }, [hasWateringCan, hasGreeting]);
 
   useEffect(() => {
     if (isTutorialDone) return;
@@ -457,25 +492,46 @@ function Header() {
                 dragSnapToOrigin
                 dragMomentum={false}
                 onDragEnd={(e: MouseEvent) => {
-                  if (!cosmosPos) return;
-                  if (
-                    cosmosPos.pageY < e.pageY &&
-                    e.pageY < cosmosPos.pageY + cosmosPos.height &&
-                    cosmosPos.pageX < e.clientX &&
-                    e.clientX < cosmosPos.pageX + cosmosPos.width &&
-                    !isPuzzle3Done
-                  ) {
-                    playSoundCorrectWithUnmute();
-                    dispatch(setIsPuzzle3Done(true));
-                    setItems((pre) => {
-                      return pre.filter(
-                        (item) => item.name !== Items.wateringCan
-                      );
-                    });
-                    setIsItemWindowOpen(false);
-                    setTimeout(() => {
-                      dispatch(incrementFound(null));
-                    }, 500);
+                  if (item.name === Items.wateringCan) {
+                    if (!cosmosPos) return;
+                    if (
+                      cosmosPos.pageY < e.pageY &&
+                      e.pageY < cosmosPos.pageY + cosmosPos.height &&
+                      cosmosPos.pageX < e.clientX &&
+                      e.clientX < cosmosPos.pageX + cosmosPos.width &&
+                      !isPuzzle3Done
+                    ) {
+                      playSoundCorrectWithUnmute();
+                      dispatch(setIsPuzzle3Done(true));
+                      setItems((pre) => {
+                        return pre.filter(
+                          (item) => item.name !== Items.wateringCan
+                        );
+                      });
+                      setIsItemWindowOpen(false);
+                      setTimeout(() => {
+                        dispatch(incrementFound(null));
+                      }, 500);
+                    }
+                  } else if (item.name === Items.greeting) {
+                    if (
+                      e.pageX < window.innerWidth / 2 + 100 &&
+                      e.pageY < document.body.scrollHeight / 4 + 100 + 112 &&
+                      e.pageX > window.innerWidth / 2 - 100 &&
+                      e.pageY > document.body.clientHeight / 4 - 100 + 112
+                    ) {
+                      playSoundCorrectWithUnmute();
+                      dispatch(setIsPuzzle6Done(true));
+                      setItems((pre) => {
+                        return pre.filter(
+                          (item) => item.name !== Items.greeting
+                        );
+                      });
+                      setIsItemWindowOpen(false);
+                      setTimeout(() => {
+                        dispatch(incrementFound(null));
+                      }, 500);
+                    }
                   }
                 }}
                 id={item.name}

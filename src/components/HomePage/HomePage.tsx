@@ -135,10 +135,13 @@ const HomePage = () => {
   const isPuzzle3Done = useSelector(
     (state: RootState) => state.localStorage.isPuzzle3Done
   );
+  const isPuzzle6Done = useSelector(
+    (state: RootState) => state.localStorage.isPuzzle6Done
+  );
   const dispatch = useDispatch();
 
   const cosmos = useRef<HTMLImageElement>(null);
-  
+
   useEffect(() => {
     document.body.onscroll = () => {
       setBodyHeight(document.body.scrollHeight);
@@ -223,6 +226,13 @@ const HomePage = () => {
               dispatch(setIsStarted(true));
               localStorage.setItem(LocalStrageValue.is_started, "true");
             }}
+          >
+            <h1>Hi, I&apos;m Masashi.</h1>
+          </div>
+        )}
+        {isPuzzle6Done && (
+          <div
+            className={`mt-28 cursor-pointer font-bold hover:text-xl active:text-sm select-none transition-{font-size} transition-{line-height} duration-200`}
           >
             <h1>Hi, I&apos;m Masashi.</h1>
           </div>

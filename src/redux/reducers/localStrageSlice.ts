@@ -14,8 +14,10 @@ const initialState: LocalStrage = {
   isPuzzle3Done: null,
   isPuzzle4Done: null,
   isPuzzle5Done: null,
+  isPuzzle6Done: null,
   hasItem: null,
   hasWateringCan: null,
+  hasGreeting: null,
   foundTotal: 0,
   theme: null,
 };
@@ -73,6 +75,10 @@ export const localStrageSlice = createSlice({
       localStorage.setItem(LocalStrageValue.is_puzzle5_done, action.payload);
       state.isPuzzle5Done = action.payload;
     },
+    setIsPuzzle6Done: (state, action) => {
+      localStorage.setItem(LocalStrageValue.is_puzzle6_done, action.payload);
+      state.isPuzzle6Done = action.payload;
+    },
     setHasItem: (state, action) => {
       localStorage.setItem(LocalStrageValue.has_item, action.payload);
       state.hasItem = action.payload;
@@ -80,6 +86,10 @@ export const localStrageSlice = createSlice({
     setHasWateringCan: (state, action) => {
       localStorage.setItem(LocalStrageValue.has_watering_can, action.payload);
       state.hasWateringCan = action.payload;
+    },
+    setHasGreeting: (state, action) => {
+      localStorage.setItem(LocalStrageValue.has_greeting, action.payload);
+      state.hasGreeting = action.payload;
     },
     setfoundTotalToRedux: (state, action) => {
       state.foundTotal = action.payload;
@@ -110,7 +120,6 @@ export const localStrageSlice = createSlice({
     },
     removeAll: (state, _) => {
       localStorage.clear();
-      state.isMute = true;
       state.isStarted = null;
       state.isTutorialDone = null;
       state.isPuzzle1Done = null;
@@ -118,8 +127,10 @@ export const localStrageSlice = createSlice({
       state.isPuzzle3Done = null;
       state.isPuzzle4Done = null;
       state.isPuzzle5Done = null;
+      state.isPuzzle6Done = null;
       state.hasItem = null;
       state.hasWateringCan = null;
+      state.hasGreeting = null;
       state.foundTotal = 0;
     },
   },
@@ -137,8 +148,10 @@ export const {
   setIsPuzzle3Done,
   setIsPuzzle4Done,
   setIsPuzzle5Done,
+  setIsPuzzle6Done,
   setHasItem,
   setHasWateringCan,
+  setHasGreeting,
   setfoundTotalToRedux,
   incrementFound,
   removeItem,
