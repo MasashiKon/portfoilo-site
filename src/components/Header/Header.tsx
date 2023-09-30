@@ -503,6 +503,7 @@ function Header() {
                     ) {
                       playSoundCorrectWithUnmute();
                       dispatch(setIsPuzzle3Done(true));
+                      dispatch(setHasWateringCan(false));
                       setItems((pre) => {
                         return pre.filter(
                           (item) => item.name !== Items.wateringCan
@@ -522,6 +523,7 @@ function Header() {
                     ) {
                       playSoundCorrectWithUnmute();
                       dispatch(setIsPuzzle6Done(true));
+                      dispatch(setHasGreeting(false));
                       setItems((pre) => {
                         return pre.filter(
                           (item) => item.name !== Items.greeting
