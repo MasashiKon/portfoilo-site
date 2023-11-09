@@ -31,6 +31,7 @@ import {
   setIsPuzzle4Done,
   setIsPuzzle5Done,
   setIsPuzzle6Done,
+  setIsPuzzle7Done,
   setHasItem,
   setHasWateringCan,
   setHasGreeting,
@@ -103,6 +104,9 @@ function Header() {
   );
   const isPuzzle6Done = useSelector(
     (state: RootState) => state.localStorage.isPuzzle6Done
+  );
+  const isPuzzle7Done = useSelector(
+    (state: RootState) => state.localStorage.isPuzzle7Done
   );
   const hasItem = useSelector((state: RootState) => state.localStorage.hasItem);
   const hasWateringCan = useSelector(
@@ -242,6 +246,13 @@ function Header() {
       dispatch(setIsPuzzle6Done(isPuzzle6DoneLocal === "true" ? true : false));
     }
 
+    if (isPuzzle7Done === null) {
+      const isPuzzle7DoneLocal = localStorage.getItem(
+        LocalStrageValue.is_puzzle7_done
+      );
+      dispatch(setIsPuzzle7Done(isPuzzle7DoneLocal === "true" ? true : false));
+    }
+
     if (hasItem === null) {
       const hasItemLocal = localStorage.getItem(LocalStrageValue.has_item);
       dispatch(setHasItem(hasItemLocal === "true" ? true : false));
@@ -301,6 +312,7 @@ function Header() {
     isPuzzle4Done,
     isPuzzle5Done,
     isPuzzle6Done,
+    isPuzzle7Done,
     isStarted,
     isTutorialDone,
     setItems,
